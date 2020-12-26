@@ -1,5 +1,5 @@
 // @format
-import React, { useState } from "react";
+import React, { useState } from "react"
 
 import {
   MenuItem,
@@ -9,9 +9,9 @@ import {
   Button,
   TextField,
   Grid,
-} from "@material-ui/core";
+} from "@material-ui/core"
 
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,14 +35,14 @@ const useStyles = makeStyles(theme => ({
   rowInput: {
     width: 140,
   },
-}));
+}))
 
-const boards = ["預女獵白", "狼王守衛"];
+const boards = ["預女獵白", "狼王守衛"]
 
 const MainPage = () => {
-  const classes = useStyles();
-  const [boardIndex, setBoardIndex] = useState();
-  const [gameID, setGameID] = useState();
+  const classes = useStyles()
+  const [boardIndex, setBoardIndex] = useState()
+  const [gameID, setGameID] = useState()
 
   return (
     <Grid
@@ -90,7 +90,7 @@ const MainPage = () => {
         </FormControl>
       </Paper>
     </Grid>
-  );
-};
+  )
+}
 
-export default MainPage;
+export default MainPage

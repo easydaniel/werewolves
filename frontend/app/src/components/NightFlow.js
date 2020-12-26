@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 
 import {
   Stepper,
@@ -7,10 +7,10 @@ import {
   Step,
   Button,
   Typography,
-} from "@material-ui/core";
+} from "@material-ui/core"
 
 const NightFlow = ({ flow }) => {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(0)
 
   return (
     flow && (
@@ -47,7 +47,7 @@ const NightFlow = ({ flow }) => {
         </Stepper>
       </>
     )
-  );
-};
+  )
+}
 
-export default NightFlow;
+export default NightFlow

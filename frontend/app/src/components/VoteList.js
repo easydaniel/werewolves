@@ -1,9 +1,9 @@
-import React from "react";
-import _ from "lodash";
+import React from "react"
+import _ from "lodash"
 
-import { List, ListItem } from "@material-ui/core";
+import { List, ListItem } from "@material-ui/core"
 
-import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
+import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt"
 
 const VoteList = ({ vote }) => {
   return (
@@ -16,7 +16,7 @@ const VoteList = ({ vote }) => {
         </ListItem>
       ))}
     </List>
-  );
-};
+  )
+}
 
-export default VoteList;
+export default VoteList
