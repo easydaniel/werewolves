@@ -1,0 +1,27 @@
+{
+    "editor.rulers": [
+        80
+    ],
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true,
+        "source.fixAll.eslint": true
+    },
+    "eslint.autofixOnSave.ruleAllowlist": [
+        "fb-www/flow-exact-by-default-object-types",
+        "fb-www/order-requires",
+        "fb-www/react-destructure-hooks",
+        "fb-www/requires-to-type-imports",
+        "fb-www/sort-destructure-keys",
+        "fb-www/sort-keys-fixable",
+        "flowtype/sort-keys",
+        "react/jsx-sort-props",
+        "react/sort-comp",
+        "prefer-const",
+        "no-var"
+    ],
+    "[flow]": {
+        "editor.detectIndentation": false,
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2
+    }
+}

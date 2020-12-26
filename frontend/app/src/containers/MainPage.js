@@ -1,5 +1,5 @@
 // @format
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 
 import {
   MenuItem,
@@ -8,15 +8,15 @@ import {
   Paper,
   Button,
   TextField,
-  Grid
-} from '@material-ui/core'
+  Grid,
+} from '@material-ui/core';
 
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100vw',
-    height: '100vh'
+    height: '100vh',
   },
   container: {
     display: 'flex',
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     width: 350,
     height: 150,
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
   rowContainer: {
     display: 'flex',
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   rowInput: {
     width: 140,
-  }
+  },
 }));
 
 const boards = ['預女獵白', '狼王守衛'];
@@ -44,19 +44,14 @@ const MainPage = () => {
   const [boardIndex, setBoardIndex] = useState();
   const [gameID, setGameID] = useState();
 
-
   return (
     <Grid
       className={classes.root}
       container
       direction="row"
       justify="center"
-      alignItems="center"
-    >
-      <Paper
-        elevation={3}
-        className={classes.container}
-        >
+      alignItems="center">
+      <Paper elevation={3} className={classes.container}>
         <FormControl>
           <FormGroup className={classes.rowContainer} row>
             <TextField
@@ -65,8 +60,7 @@ const MainPage = () => {
               select
               label="板子"
               value={boardIndex}
-              onChange={(e)=> setBoardIndex(e.target.value)}
-            >
+              onChange={e => setBoardIndex(e.target.value)}>
               {boards.map((board, idx) => (
                 <MenuItem key={idx} value={idx}>
                   {board}
@@ -83,9 +77,10 @@ const MainPage = () => {
               color="secondary"
               className={classes.rowInput}
               value={gameID}
-              onChange={(e) => setGameID(e.target.value)}
+              onChange={e => setGameID(e.target.value)}
               id="game-id"
-              label="遊戲 ID" />
+              label="遊戲 ID"
+            />
             <Button variant="contained" color="secondary">
               Join
             </Button>
@@ -93,7 +88,7 @@ const MainPage = () => {
         </FormControl>
       </Paper>
     </Grid>
-  )
-}
+  );
+};
 
 export default MainPage;
