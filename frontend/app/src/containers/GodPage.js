@@ -4,6 +4,7 @@ import React from "react"
 import VoteProgress from "../components/VoteProgress"
 import NightFlow from "../components/NightFlow"
 import BoardInfo from "../components/BoardInfo"
+import PlayerList from "../components/PlayerList"
 
 const Board = {
   characters: { Wolf: 4, Villager: 4, God: 4 },
@@ -25,10 +26,15 @@ const Votes = [
 ]
 
 const Flow = ["第一句", "第二句", "第三句", "第四句"]
+const Players = [
+  { name: "John", character: "Wolf" },
+  { name: "Eason", character: "Seer" },
+]
 
 const GodPage = () => {
   return (
     <>
+      <PlayerList players={Players} />
       <BoardInfo info={Board} />
       <NightFlow flow={Flow} />
       <VoteProgress votes={Votes} />
