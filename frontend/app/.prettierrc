@@ -1,9 +1,9 @@
 {
     "arrowParens": "avoid",
-    "singleQuote": true,
+    "singleQuote": false,
     "trailingComma": "all",
     "bracketSpacing": true,
-    "jsxBracketSameLine": true,
+    "jsxBracketSameLine": false,
     "overrides": [
         {
         "files": ["*.js", "*.jsx", "*.flow"],

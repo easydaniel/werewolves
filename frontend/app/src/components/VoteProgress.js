@@ -1,5 +1,5 @@
-import React from 'react';
-import VoteList from './VoteList';
+import React from "react";
+import VoteList from "./VoteList";
 
 import {
   Timeline,
@@ -8,24 +8,24 @@ import {
   TimelineDot,
   TimelineConnector,
   TimelineContent,
-} from '@material-ui/lab';
+} from "@material-ui/lab";
 
-import {Typography, Paper} from '@material-ui/core';
-import {makeStyles} from '@material-ui/core/styles';
+import { Typography, Paper } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    padding: '6px 16px',
+    padding: "6px 16px",
   },
 }));
 
-const VoteProgress = ({votes}) => {
+const VoteProgress = ({ votes }) => {
   const classes = useStyles();
   return (
     <Timeline>
       {votes &&
         votes.map((vote, idx) => (
-              <TimelineItem key={idx}>
+          <TimelineItem key={idx}>
             <TimelineSeparator>
               <TimelineDot />
               {idx !== votes.length - 1 && <TimelineConnector />}

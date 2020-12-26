@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 
 import {
   Stepper,
@@ -7,9 +7,9 @@ import {
   Step,
   Button,
   Typography,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
-const NightFlow = ({flow}) => {
+const NightFlow = ({ flow }) => {
   const [activeStep, setActiveStep] = useState(0);
 
   return (
@@ -26,7 +26,8 @@ const NightFlow = ({flow}) => {
               <StepContent>
                 <Button
                   disabled={activeStep === 0}
-                  onClick={() => setActiveStep(prevStep => prevStep - 1)}>
+                  onClick={() => setActiveStep(prevStep => prevStep - 1)}
+                >
                   上一步
                 </Button>
                 <Button
@@ -36,8 +37,9 @@ const NightFlow = ({flow}) => {
                     activeStep === flow.length - 1
                       ? setActiveStep(0)
                       : setActiveStep(prevStep => prevStep + 1)
-                  }>
-                  {activeStep === flow.length - 1 ? '重新開始' : '下一步'}
+                  }
+                >
+                  {activeStep === flow.length - 1 ? "重新開始" : "下一步"}
                 </Button>
               </StepContent>
             </Step>

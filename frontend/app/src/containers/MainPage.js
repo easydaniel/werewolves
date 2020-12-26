@@ -1,5 +1,5 @@
 // @format
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 import {
   MenuItem,
@@ -9,26 +9,26 @@ import {
   Button,
   TextField,
   Grid,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: '100vw',
-    height: '100vh',
+    width: "100vw",
+    height: "100vh",
   },
   container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     width: 350,
     height: 150,
     padding: theme.spacing(2),
   },
   rowContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
+    display: "flex",
+    justifyContent: "space-between",
     margin: theme.spacing(1),
     width: 250,
   },
@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const boards = ['預女獵白', '狼王守衛'];
+const boards = ["預女獵白", "狼王守衛"];
 
 const MainPage = () => {
   const classes = useStyles();
@@ -50,7 +50,8 @@ const MainPage = () => {
       container
       direction="row"
       justify="center"
-      alignItems="center">
+      alignItems="center"
+    >
       <Paper elevation={3} className={classes.container}>
         <FormControl>
           <FormGroup className={classes.rowContainer} row>
@@ -60,7 +61,8 @@ const MainPage = () => {
               select
               label="板子"
               value={boardIndex}
-              onChange={e => setBoardIndex(e.target.value)}>
+              onChange={e => setBoardIndex(e.target.value)}
+            >
               {boards.map((board, idx) => (
                 <MenuItem key={idx} value={idx}>
                   {board}

@@ -1,18 +1,18 @@
-import React from 'react';
-import _ from 'lodash';
+import React from "react";
+import _ from "lodash";
 
-import {List, ListItem} from '@material-ui/core';
+import { List, ListItem } from "@material-ui/core";
 
-import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
+import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
 
-const VoteList = ({vote}) => {
+const VoteList = ({ vote }) => {
   return (
     <List dense>
       {_.map(vote, (voters, votee) => (
         <ListItem key={votee}>
-          {voters.join(',')}
+          {voters.join(",")}
           <ArrowRightAltIcon />
-          {votee === '0' ? '棄票' : votee}
+          {votee === "0" ? "棄票" : votee}
         </ListItem>
       ))}
     </List>

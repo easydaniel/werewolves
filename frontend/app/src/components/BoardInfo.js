@@ -1,8 +1,14 @@
-import React from 'react';
-import _ from 'lodash';
+import React from "react";
+import _ from "lodash";
 
-import {makeStyles} from '@material-ui/core/styles';
-import {Card, CardContent, List, ListItem, Typography} from '@material-ui/core';
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  Card,
+  CardContent,
+  List,
+  ListItem,
+  Typography,
+} from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
@@ -10,8 +16,8 @@ const useStyles = makeStyles({
   },
 });
 
-const BoardInfo = ({info}) => {
-  const {gameID, name, characters} = info;
+const BoardInfo = ({ info }) => {
+  const { gameID, name, characters } = info;
   const numPlayers = _.reduce(characters, (result, val) => result + val, 0);
   const classes = useStyles();
   return (
