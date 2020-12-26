@@ -25,7 +25,7 @@ const VoteProgress = ({votes}) => {
     <Timeline>
       {votes &&
         votes.map((vote, idx) => (
-          <TimelineItem key={idx}>
+              <TimelineItem key={idx}>
             <TimelineSeparator>
               <TimelineDot />
               {idx !== votes.length - 1 && <TimelineConnector />}

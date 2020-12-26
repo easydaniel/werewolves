@@ -1,6 +1,6 @@
 // @format
-import MainPage from './containers/MainPage';
-import GodPage from './containers/GodPage';
+import MainPage from "./containers/MainPage";
+import GodPage from "./containers/GodPage";
 
 const App = () => {
   return <GodPage />;

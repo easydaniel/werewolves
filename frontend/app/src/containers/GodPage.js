@@ -6,7 +6,7 @@ import NightFlow from '../components/NightFlow';
 import BoardInfo from '../components/BoardInfo';
 
 const Board = {
-  characters: {Wolf: 4, Villager: 4, God: 4},
+  characters: { Wolf: 4, Villager: 4, God: 4 },
   gameID: 'TA32EB',
   name: '狼王守衛',
 };
