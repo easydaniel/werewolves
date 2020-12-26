@@ -4,7 +4,6 @@ import _ from 'lodash'
 import {
   List,
   ListItem,
-  ListItemText,
 } from '@material-ui/core'
 
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';

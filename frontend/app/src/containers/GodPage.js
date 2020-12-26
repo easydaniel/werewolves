@@ -2,6 +2,7 @@
 import React from 'react'
 
 import VoteProgress from '../components/VoteProgress'
+import NightFlow from '../components/NightFlow'
 
 const BoardInfo = {
     flow: ['1', '2', '3'],
@@ -22,9 +23,16 @@ const Votes = [
     }
 ]
 
+const Flow = [
+  '第一句',
+  '第二句',
+  '第三句',
+  '第四句',
+]
+
 const GodPage = () => {
     return (
-        <VoteProgress votes={Votes} />
+        <NightFlow flow={Flow} />
     )
 }
 
