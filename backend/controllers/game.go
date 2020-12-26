@@ -4,27 +4,17 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+
+	"github.com/easydaniel/werewolves/backend/game"
 )
 
-type Game struct {
-	ID    string
-	Owner string
-	Board string
-	User  map[int]string
-}
-
-func NewGame() *Game {
-	game := new(Game)
-	return game
-}
-
 type GameController struct {
-	games map[string]*Game
+	games map[string]*game.Game
 }
 
 func NewGameController() *GameController {
 	ctrl := new(GameController)
-	ctrl.games = make(map[string]*Game)
+	ctrl.games = make(map[string]*game.Game)
 	return ctrl
 }
 
@@ -38,5 +28,5 @@ func (ctrl *GameController) Post(c *gin.Context) {
 	}
 	var body Body
 	c.BindJSON(&body)
-	ctrl.games[body.Name] = new(Game)
+	ctrl.games[body.Name] = new(game.Game)
 }
