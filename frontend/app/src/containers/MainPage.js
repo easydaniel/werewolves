@@ -73,19 +73,20 @@ const MainPage = () => {
                 </MenuItem>
               ))}
             </TextField>
-            <Button variant="outlined" color="primary">
+            <Button variant="contained" color="primary">
               Create
             </Button>
           </FormGroup>
           <FormGroup className={classes.rowContainer} row>
             <TextField
               autoComplete="off"
+              color="secondary"
               className={classes.rowInput}
               value={gameID}
               onChange={(e) => setGameID(e.target.value)}
               id="game-id"
               label="遊戲 ID" />
-            <Button variant="outlined" color="secondary">
+            <Button variant="contained" color="secondary">
               Join
             </Button>
           </FormGroup>

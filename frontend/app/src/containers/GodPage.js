@@ -3,11 +3,12 @@ import React from 'react'
 
 import VoteProgress from '../components/VoteProgress'
 import NightFlow from '../components/NightFlow'
+import BoardInfo from '../components/BoardInfo'
 
-const BoardInfo = {
-    flow: ['1', '2', '3'],
+const Board = {
     characters: { Wolf: 4, Villager: 4, God: 4},
-    gameID: 'TA32EB'
+    gameID: 'TA32EB',
+    name: '狼王守衛'
 }
 
 const Votes = [
@@ -32,7 +33,11 @@ const Flow = [
 
 const GodPage = () => {
     return (
+      <>
+        <BoardInfo info={Board} />
         <NightFlow flow={Flow} />
+        <VoteProgress votes={Votes} />
+      </>
     )
 }
 
