@@ -77,22 +77,22 @@ const GodPage = () => {
   const classes = useStyles()
   return (
     <Grid className={classes.container} container direction="row">
-      <Grid xs />
-      <Grid xs={2}>
+      <Grid lg sm md />
+      <Grid lg={2} md={3} sm={12}>
         <BoardInfo info={Board} />
         <div className={classes.spacer} />
         <PlayerList players={Players} />
       </Grid>
-      <Grid xs={4}>
+      <Grid lg={4} md={6} sm={12}>
         <Grid container justify="center">
           <GameFunctions />
         </Grid>
         <VoteProgress votes={Votes} />
       </Grid>
-      <Grid xs={2}>
+      <Grid lg={2} md={3} sm={12}>
         <NightFlow flow={Flow} />
       </Grid>
-      <Grid xs />
+      <Grid lg sm md />
     </Grid>
   )
 }
