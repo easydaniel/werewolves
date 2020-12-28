@@ -6,6 +6,7 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemIcon,
+  ListSubheader,
   Chip,
   Avatar,
   Badge,
@@ -46,46 +47,69 @@ const StyledBadge = withStyles(theme => ({
   },
 }))(Badge)
 
+export const ElectionEnum = Object.freeze({
+  INVOLVED: 1,
+  CANCELED: 2,
+})
+
+const ElectionStatusIcon = ({ election }) => {
+  switch (election) {
+    case ElectionEnum.INVOLVED:
+      return <PanToolOutlinedIcon />
+    case ElectionEnum.CANCELED:
+      return <NotInterestedIcon />
+    default:
+      return null
+  }
+}
+
 const PlayerList = ({ players }) => {
   const classes = useStyles()
   return (
     players && (
-      <List dense>
-        {players.map(({ name, character }, idx) => (
-          <ListItem key={idx}>
-            <ListItemAvatar>
-              <StyledBadge
-                overlap="circle"
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
-                }}
-                variant="dot"
-              >
-                <Avatar
-                  className={{
-                    [classes.avatar]: true,
-                    [classes.livePlayerAvatar]: true,
+      <List dense subheader={<ListSubheader>玩家列表</ListSubheader>}>
+        {players.map(
+          (
+            { name, character, status: { isConnected, isAlive, election } },
+            idx,
+          ) => (
+            <ListItem key={idx}>
+              <ListItemAvatar>
+                <StyledBadge
+                  overlap="circle"
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
                   }}
+                  invisible={!isConnected}
+                  variant={"dot"}
                 >
-                  {idx + 1}
-                </Avatar>
-              </StyledBadge>
-            </ListItemAvatar>
-            <Chip
-              className={classes.characterChip}
-              variant="outlined"
-              size="small"
-              color="primary"
-              label={character}
-            />
-            {name}
-            <ListItemIcon className={classes.electionStatus}>
-              <PanToolOutlinedIcon />
-              <NotInterestedIcon />
-            </ListItemIcon>
-          </ListItem>
-        ))}
+                  <Avatar
+                    className={{
+                      [classes.avatar]: true,
+                      [classes.livePlayerAvatar]: isAlive,
+                    }}
+                  >
+                    {idx + 1}
+                  </Avatar>
+                </StyledBadge>
+              </ListItemAvatar>
+              {character && (
+                <Chip
+                  className={classes.characterChip}
+                  variant="outlined"
+                  size="small"
+                  color="primary"
+                  label={character}
+                />
+              )}
+              {name || `${idx + 1} 號玩家`}
+              <ListItemIcon className={classes.electionStatus}>
+                <ElectionStatusIcon election={election} />
+              </ListItemIcon>
+            </ListItem>
+          ),
+        )}
       </List>
     )
   )
