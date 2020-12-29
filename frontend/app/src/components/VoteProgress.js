@@ -20,25 +20,27 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const VoteProgress = ({ votes }) => {
+const VoteProgress = ({ votes, isGod }) => {
   const classes = useStyles()
   return (
-    <Timeline>
+    <Timeline align={isGod ? "left" : "alternate"}>
       {votes &&
         votes.map((vote, idx) => (
           <TimelineItem key={idx}>
-            <TimelineOppositeContent>
-              <TextField
-                autoComplete={"off"}
-                variant={"outlined"}
-                fullWidth
-                label={`第 ${idx + 1} 晚`}
-                placeholder={`Ex:\t狼刀 X\n\t女巫開藥...`}
-                multiline
-                rows={Object.keys(votes).length + 4}
-                rowsMax={Object.keys(votes).length + 4}
-              />
-            </TimelineOppositeContent>
+            {isGod && (
+              <TimelineOppositeContent>
+                <TextField
+                  autoComplete={"off"}
+                  variant={"outlined"}
+                  fullWidth
+                  label={`第 ${idx + 1} 晚`}
+                  placeholder={`Ex:\t狼刀 X\n\t女巫開藥...`}
+                  multiline
+                  rows={Object.keys(votes).length + 4}
+                  rowsMax={Object.keys(votes).length + 4}
+                />
+              </TimelineOppositeContent>
+            )}
             <TimelineSeparator>
               <TimelineDot />
               {idx !== votes.length - 1 && <TimelineConnector />}

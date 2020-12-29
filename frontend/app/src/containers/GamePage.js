@@ -6,6 +6,7 @@ import { Grid } from "@material-ui/core"
 import VoteProgress from "../components/VoteProgress"
 import GameFunctions from "../components/GameFunctions"
 import NightFlow from "../components/NightFlow"
+import CharacterCard from "../components/CharacterCard"
 import BoardInfo from "../components/BoardInfo"
 import PlayerList from "../components/PlayerList"
 import { ElectionEnum } from "../components/PlayerList"
@@ -17,6 +18,7 @@ const Board = {
   gameID: "TA32EB",
   name: "狼王守衛",
   hasSheriff: true,
+  flow: ["第一句", "第二句", "第三句", "第四句"],
 }
 
 const Votes = [
@@ -32,12 +34,12 @@ const Votes = [
   },
 ]
 
-const Flow = ["第一句", "第二句", "第三句", "第四句"]
 const Players = [
   {
     name: "John",
     character: "Wolf",
     status: {
+      isVacant: false,
       isConnected: true,
       isAlive: true,
       election: ElectionEnum.INVOLVED,
@@ -47,6 +49,7 @@ const Players = [
     name: "Eason",
     character: "Seer",
     status: {
+      isVacant: false,
       isConnected: true,
       isAlive: false,
       election: null,
@@ -56,12 +59,20 @@ const Players = [
     name: "Daniel",
     character: "Hunter",
     status: {
+      isVacant: true,
       isConnected: false,
       isAlive: true,
       election: ElectionEnum.CANCELED,
     },
   },
 ]
+
+const Character = {
+  name: "預言家",
+  imgSrc:
+    "https://www.werewolfonline.game/pc/gw/20191028140957/img/role/1_pic_67fc4ec.png",
+}
+
 const useStyles = makeStyles(theme => ({
   container: {
     flexGrow: 1,
@@ -73,28 +84,33 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const GodPage = () => {
+const GamePage = ({ board, isGod }) => {
   const classes = useStyles()
+  const { flow, ...info } = board
   return (
     <Grid className={classes.container} container direction="row">
-      <Grid lg sm md />
-      <Grid lg={2} md={3} sm={12}>
-        <BoardInfo info={Board} />
+      <Grid item lg sm md />
+      <Grid item lg={2} md={3} sm={12}>
+        <BoardInfo info={info} />
         <div className={classes.spacer} />
-        <PlayerList players={Players} />
+        <PlayerList isGod={isGod} players={Players} />
       </Grid>
-      <Grid lg={4} md={6} sm={12}>
+      <Grid item lg={4} md={6} sm={12}>
         <Grid container justify="center">
-          <GameFunctions />
+          <GameFunctions isGod={isGod} />
         </Grid>
-        <VoteProgress votes={Votes} />
+        <VoteProgress votes={Votes} isGod={isGod} />
       </Grid>
-      <Grid lg={2} md={3} sm={12}>
-        <NightFlow flow={Flow} />
+      <Grid item lg={2} md={3} sm={12}>
+        {isGod ? (
+          <NightFlow flow={flow} />
+        ) : (
+          <CharacterCard character={Character} />
+        )}
       </Grid>
-      <Grid lg sm md />
+      <Grid item lg sm md />
     </Grid>
   )
 }
 
-export default GodPage
+export default GamePage

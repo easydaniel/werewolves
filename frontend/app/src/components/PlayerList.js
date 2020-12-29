@@ -1,5 +1,5 @@
 import React from "react"
-
+import cx from "classnames"
 import { makeStyles, withStyles } from "@material-ui/core/styles"
 import {
   List,
@@ -11,7 +11,7 @@ import {
   Avatar,
   Badge,
 } from "@material-ui/core"
-import { green } from "@material-ui/core/colors"
+import { green, red } from "@material-ui/core/colors"
 import PanToolOutlinedIcon from "@material-ui/icons/PanToolOutlined"
 import NotInterestedIcon from "@material-ui/icons/NotInterested"
 
@@ -22,6 +22,9 @@ const useStyles = makeStyles(theme => ({
   },
   livePlayerAvatar: {
     backgroundColor: green[800],
+  },
+  deadPlayerAvatar: {
+    backgroundColor: red[800],
   },
   characterChip: {
     marginRight: theme.spacing(1),
@@ -63,14 +66,18 @@ const ElectionStatusIcon = ({ election }) => {
   }
 }
 
-const PlayerList = ({ players }) => {
+const PlayerList = ({ players, isGod }) => {
   const classes = useStyles()
   return (
     players && (
       <List dense subheader={<ListSubheader>玩家列表</ListSubheader>}>
         {players.map(
           (
-            { name, character, status: { isConnected, isAlive, election } },
+            {
+              name,
+              character,
+              status: { isVacant, isConnected, isAlive, election },
+            },
             idx,
           ) => (
             <ListItem key={idx}>
@@ -85,16 +92,17 @@ const PlayerList = ({ players }) => {
                   variant={"dot"}
                 >
                   <Avatar
-                    className={{
+                    className={cx({
                       [classes.avatar]: true,
-                      [classes.livePlayerAvatar]: isAlive,
-                    }}
+                      [classes.livePlayerAvatar]: !isVacant && isAlive,
+                      [classes.deadPlayerAvatar]: !isVacant && !isAlive,
+                    })}
                   >
                     {idx + 1}
                   </Avatar>
                 </StyledBadge>
               </ListItemAvatar>
-              {character && (
+              {isGod && (
                 <Chip
                   className={classes.characterChip}
                   variant="outlined"

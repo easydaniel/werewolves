@@ -1,5 +1,5 @@
 // @format
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 
 import {
   MenuItem,
@@ -37,9 +37,33 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const boards = ["預女獵白", "狼王守衛"]
+const createGame = boardIndex => {
+  // createGame with boardIndex
+  // response should be board info
+  const Board = {
+    characters: { Wolf: 4, Villager: 4, God: 4 },
+    gameID: "TA32EB",
+    name: "狼王守衛",
+    hasSheriff: true,
+    flow: ["第一句", "第二句", "第三句", "第四句"],
+  }
+  return Board
+}
 
-const MainPage = () => {
+const joinGame = gameID => {
+  // joinGame with gameID
+  // response should be board info and game progress info
+  const Board = {
+    characters: { Wolf: 4, Villager: 4, God: 4 },
+    gameID: "TA32EB",
+    name: "狼王守衛",
+    hasSheriff: true,
+    flow: ["第一句", "第二句", "第三句", "第四句"],
+  }
+  return Board
+}
+
+const MainPage = ({ boardList, setBoard, setIsGod }) => {
   const classes = useStyles()
   const [boardIndex, setBoardIndex] = useState()
   const [gameID, setGameID] = useState()
@@ -59,23 +83,33 @@ const MainPage = () => {
               className={classes.rowInput}
               id="board-select"
               select
+              variant="outlined"
               label="板子"
               value={boardIndex}
               onChange={e => setBoardIndex(e.target.value)}
             >
-              {boards.map((board, idx) => (
+              {boardList.map((board, idx) => (
                 <MenuItem key={idx} value={idx}>
                   {board}
                 </MenuItem>
               ))}
             </TextField>
-            <Button variant="contained" color="primary">
+            <Button
+              onClick={() => {
+                setIsGod(true)
+                const board = createGame(boardIndex)
+                setBoard(board)
+              }}
+              variant="outlined"
+              color="primary"
+            >
               Create
             </Button>
           </FormGroup>
           <FormGroup className={classes.rowContainer} row>
             <TextField
               autoComplete="off"
+              variant="outlined"
               color="secondary"
               className={classes.rowInput}
               value={gameID}
@@ -83,7 +117,14 @@ const MainPage = () => {
               id="game-id"
               label="遊戲 ID"
             />
-            <Button variant="contained" color="secondary">
+            <Button
+              onClick={() => {
+                const board = joinGame(gameID)
+                setBoard(board)
+              }}
+              variant="outlined"
+              color="secondary"
+            >
               Join
             </Button>
           </FormGroup>
