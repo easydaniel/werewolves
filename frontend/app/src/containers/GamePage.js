@@ -13,14 +13,6 @@ import { ElectionEnum } from "../components/PlayerList"
 
 import { makeStyles } from "@material-ui/core/styles"
 
-const Board = {
-  characters: { Wolf: 4, Villager: 4, God: 4 },
-  gameID: "TA32EB",
-  name: "狼王守衛",
-  hasSheriff: true,
-  flow: ["第一句", "第二句", "第三句", "第四句"],
-}
-
 const Votes = [
   {
     0: [4, 7, 9],

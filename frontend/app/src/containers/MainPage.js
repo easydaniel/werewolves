@@ -40,29 +40,29 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+const Board = {
+  characters: { Wolf: 4, Villager: 4, God: 4 },
+  gameID: "TA32EB",
+  name: "狼王守衛",
+  hasSheriff: true,
+  flow: [
+    "狼人請睜眼。請選擇你們要擊殺的對象，確定是＿嗎？狼人請閉眼。",
+    "預言家(通靈師)請睜眼。請選擇你要查驗的對象。他的身份是＿。預言家(通靈師)請閉眼。",
+    "女巫請睜眼。今晚＿倒牌，請問你要使用解藥嗎？請問你要使用毒藥嗎？解藥給手勢，毒藥給數字。女巫請閉眼。",
+    "獵人請睜眼。你的開槍狀態為＿？獵人請閉眼。",
+    "守衛請睜眼。請選擇你要守護的對象，確定是＿嗎？守衛請閉眼。",
+  ],
+}
+
 const createGame = boardIndex => {
   // createGame with boardIndex
   // response should be board info
-  const Board = {
-    characters: { Wolf: 4, Villager: 4, God: 4 },
-    gameID: "TA32EB",
-    name: "狼王守衛",
-    hasSheriff: true,
-    flow: ["第一句", "第二句", "第三句", "第四句"],
-  }
   return Board
 }
 
 const joinGame = gameID => {
   // joinGame with gameID
   // response should be board info and game progress info
-  const Board = {
-    characters: { Wolf: 4, Villager: 4, God: 4 },
-    gameID: "TA32EB",
-    name: "狼王守衛",
-    hasSheriff: true,
-    flow: ["第一句", "第二句", "第三句", "第四句"],
-  }
   return Board
 }
 

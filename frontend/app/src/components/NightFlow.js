@@ -19,9 +19,7 @@ const NightFlow = ({ flow }) => {
           {flow.map((label, idx) => (
             <Step key={idx}>
               <StepLabel>
-                <Typography variant="h6" component="h1">
-                  {label}
-                </Typography>
+                <Typography variant="subtitle2">{label}</Typography>
               </StepLabel>
               <StepContent>
                 <Button
