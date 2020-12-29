@@ -1,45 +1,24 @@
-import React, { useState } from "react"
+import React from "react"
 
 import {
   Stepper,
   StepLabel,
   StepContent,
   Step,
-  Button,
   Typography,
 } from "@material-ui/core"
 
 const NightFlow = ({ flow }) => {
-  const [activeStep, setActiveStep] = useState(0)
-
   return (
     flow && (
       <>
-        <Stepper activeStep={activeStep} orientation="vertical">
+        <Stepper orientation="vertical">
           {flow.map((label, idx) => (
-            <Step key={idx}>
+            <Step key={idx} completed={false} active>
               <StepLabel>
                 <Typography variant="subtitle2">{label}</Typography>
               </StepLabel>
-              <StepContent>
-                <Button
-                  disabled={activeStep === 0}
-                  onClick={() => setActiveStep(prevStep => prevStep - 1)}
-                >
-                  上一步
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() =>
-                    activeStep === flow.length - 1
-                      ? setActiveStep(0)
-                      : setActiveStep(prevStep => prevStep + 1)
-                  }
-                >
-                  {activeStep === flow.length - 1 ? "重新開始" : "下一步"}
-                </Button>
-              </StepContent>
+              <StepContent></StepContent>
             </Step>
           ))}
         </Stepper>
