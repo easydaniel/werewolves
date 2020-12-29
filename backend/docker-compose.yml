@@ -4,6 +4,8 @@ services:
   server:
     build:
       context: .
+    volumes:
+      - ./config.yaml:/root/config.yaml
     restart: always
     ports:
       - 8081:8081

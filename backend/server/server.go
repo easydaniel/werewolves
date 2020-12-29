@@ -1,14 +1,21 @@
 package server
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 
+	"github.com/easydaniel/werewolves/backend/config"
 	"github.com/easydaniel/werewolves/backend/logp"
 	"github.com/easydaniel/werewolves/backend/ws"
 )
 
 func Run() {
+	cfg, err := config.NewConfig("config.yaml")
+	if err != nil {
+		panic(err)
+	}
 	logp.Init()
 
 	// gin.SetMode(gin.ReleaseMode)
@@ -20,6 +27,6 @@ func Run() {
 
 	router.GET("/ws", gin.WrapF(ws.Handler))
 
-	logp.L().Info("Listen", zap.Int("port", 8081))
-	router.Run("0.0.0.0:8081")
+	logp.L().Info("Listen", zap.Int("port", cfg.Server.Port))
+	router.Run(fmt.Sprintf("0.0.0.0:%v", cfg.Server.Port))
 }

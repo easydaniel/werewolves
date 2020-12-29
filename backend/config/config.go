@@ -6,11 +6,13 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+type Server struct {
+	Port int
+}
+
 // Config .
 type Config struct {
-	Server struct {
-		Port int
-	}
+	Server Server
 }
 
 func NewConfig(path string) (*Config, error) {
