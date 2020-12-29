@@ -1,0 +1,54 @@
+{
+  "has_sheriff": true,
+  "characters": [
+    {
+      "name": "狼王",
+      "team": 1,
+      "night_order": 0,
+      "hint": "",
+      "count": 1
+    },
+    {
+      "name": "狼人",
+      "team": 1,
+      "night_order": 1,
+      "hint": "狼人請睜眼。請選擇你們要擊殺的對象，確定是 ＿ 嗎？狼人請閉眼。",
+      "count": 3
+    },
+    {
+      "name": "預言家",
+      "team": 2,
+      "night_order": 2,
+      "hint": "預言家請睜眼。請選擇你要查驗的對象。他的身份是 ＿ 。預言家請閉眼。",
+      "count": 1
+    },
+    {
+      "name": "女巫",
+      "team": 2,
+      "night_order": 3,
+      "hint": "女巫請睜眼。今晚 ＿ 倒牌，請問你要使用解藥嗎？請問你要使用毒藥嗎？解藥給手勢，毒藥給數字。女巫請閉眼。",
+      "count": 1
+    },
+    {
+      "name": "獵人",
+      "team": 2,
+      "night_order": 4,
+      "hint": "獵人請睜眼。你的開槍狀態為 ＿ ？獵人請閉眼。",
+      "count": 1
+    },
+    {
+      "name": "守衛",
+      "team": 2,
+      "night_order": 5,
+      "hint": "守衛請睜眼。請選擇你要守護的對象，確定是 ＿ 嗎？守衛請閉眼。",
+      "count": 1
+    },
+    {
+      "name": "平民",
+      "team": 2,
+      "night_order": -1,
+      "hint": "",
+      "count": 4
+    }
+  ]
+}
