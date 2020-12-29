@@ -35,6 +35,9 @@ const useStyles = makeStyles(theme => ({
   rowInput: {
     width: 140,
   },
+  button: {
+    width: 80,
+  },
 }))
 
 const createGame = boardIndex => {
@@ -95,6 +98,7 @@ const MainPage = ({ boardList, setBoard, setIsGod }) => {
               ))}
             </TextField>
             <Button
+              className={classes.button}
               onClick={() => {
                 setIsGod(true)
                 const board = createGame(boardIndex)
@@ -118,6 +122,7 @@ const MainPage = ({ boardList, setBoard, setIsGod }) => {
               label="遊戲 ID"
             />
             <Button
+              className={classes.button}
               onClick={() => {
                 const board = joinGame(gameID)
                 setBoard(board)
