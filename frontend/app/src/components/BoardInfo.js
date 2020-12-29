@@ -7,7 +7,6 @@ import {
   CardContent,
   List,
   ListItem,
-  ListSubheader,
   Typography,
 } from "@material-ui/core"
 
@@ -17,8 +16,8 @@ const useStyles = makeStyles({
   },
 })
 
-const BoardInfo = ({ info }) => {
-  const { gameID, name, characters, hasSheriff } = info
+const BoardInfo = ({ info, gameID }) => {
+  const { name, characters, hasSheriff } = info
   const numPlayers = _.reduce(characters, (result, val) => result + val, 0)
   const classes = useStyles()
   return (

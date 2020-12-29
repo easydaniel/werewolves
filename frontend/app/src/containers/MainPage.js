@@ -40,33 +40,35 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Board = {
-  characters: { Wolf: 4, Villager: 4, God: 4 },
+const Game = {
   gameID: "TA32EB",
-  name: "狼王守衛",
-  hasSheriff: true,
-  flow: [
-    "狼人請睜眼。請選擇你們要擊殺的對象，確定是＿嗎？狼人請閉眼。",
-    "預言家(通靈師)請睜眼。請選擇你要查驗的對象。他的身份是＿。預言家(通靈師)請閉眼。",
-    "女巫請睜眼。今晚＿倒牌，請問你要使用解藥嗎？請問你要使用毒藥嗎？解藥給手勢，毒藥給數字。女巫請閉眼。",
-    "獵人請睜眼。你的開槍狀態為＿？獵人請閉眼。",
-    "守衛請睜眼。請選擇你要守護的對象，確定是＿嗎？守衛請閉眼。",
-  ],
+  board: {
+    characters: { Wolf: 4, Villager: 4, God: 4 },
+    name: "狼王守衛",
+    hasSheriff: true,
+    flow: [
+      "狼人請睜眼。請選擇你們要擊殺的對象，確定是＿嗎？狼人請閉眼。",
+      "預言家(通靈師)請睜眼。請選擇你要查驗的對象。他的身份是＿。預言家(通靈師)請閉眼。",
+      "女巫請睜眼。今晚＿倒牌，請問你要使用解藥嗎？請問你要使用毒藥嗎？解藥給手勢，毒藥給數字。女巫請閉眼。",
+      "獵人請睜眼。你的開槍狀態為＿？獵人請閉眼。",
+      "守衛請睜眼。請選擇你要守護的對象，確定是＿嗎？守衛請閉眼。",
+    ],
+  },
 }
 
 const createGame = boardIndex => {
   // createGame with boardIndex
-  // response should be board info
-  return Board
+  // response should be Game info
+  return Game
 }
 
 const joinGame = gameID => {
   // joinGame with gameID
-  // response should be board info and game progress info
-  return Board
+  // response should be Game info and game progress info
+  return Game
 }
 
-const MainPage = ({ boardList, setBoard, setIsGod }) => {
+const MainPage = ({ boardList, setGame, setIsGod }) => {
   const classes = useStyles()
   const [boardIndex, setBoardIndex] = useState()
   const [gameID, setGameID] = useState()
@@ -101,8 +103,8 @@ const MainPage = ({ boardList, setBoard, setIsGod }) => {
               className={classes.button}
               onClick={() => {
                 setIsGod(true)
-                const board = createGame(boardIndex)
-                setBoard(board)
+                const game = createGame(boardIndex)
+                setGame(game)
               }}
               variant="outlined"
               color="primary"
@@ -124,8 +126,8 @@ const MainPage = ({ boardList, setBoard, setIsGod }) => {
             <Button
               className={classes.button}
               onClick={() => {
-                const board = joinGame(gameID)
-                setBoard(board)
+                const game = joinGame(gameID)
+                setGame(game)
               }}
               variant="outlined"
               color="secondary"

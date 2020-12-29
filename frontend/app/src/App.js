@@ -15,18 +15,17 @@ const getBoards = () => {
 
 const App = () => {
   const [boardList, setBoardList] = useState([])
-  const [board, setBoard] = useState(null)
+  const [game, setGame] = useState(null)
   const [isGod, setIsGod] = useState(false)
 
   useEffect(() => {
     setBoardList(getBoards)
   })
-  useEffect(() => {}, [board])
 
-  return board === null ? (
-    <MainPage boardList={boardList} setBoard={setBoard} setIsGod={setIsGod} />
+  return game === null ? (
+    <MainPage boardList={boardList} setGame={setGame} setIsGod={setIsGod} />
   ) : (
-    <GamePage board={board} isGod={isGod} />
+    <GamePage game={game} isGod={isGod} />
   )
 }
 

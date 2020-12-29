@@ -1,9 +1,10 @@
 // @format
-import React from "react"
-
+import React, { useState } from "react"
+import _, { set } from "lodash"
 import { Grid } from "@material-ui/core"
 
 import VoteProgress from "../components/VoteProgress"
+import SelectDialog from "../components/SelectDialog"
 import GameFunctions from "../components/GameFunctions"
 import NightFlow from "../components/NightFlow"
 import CharacterCard from "../components/CharacterCard"
@@ -76,20 +77,71 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const GamePage = ({ board, isGod }) => {
+const GamePage = ({ game, isGod }) => {
   const classes = useStyles()
-  const { flow, ...info } = board
+  const {
+    gameID,
+    board: { flow, ...info },
+  } = game
+  const [voteDialogOpen, setVoteDialogOpen] = useState(false)
+  const [seatDialogOpen, setSeatDialogOpen] = useState(false)
+
+  const playerFuncs = {
+    openVoteDialog: () => setVoteDialogOpen(true),
+    openSeatDialog: () => setSeatDialogOpen(true),
+    getCharacter: () => {
+      console.log("getcharacter")
+    },
+  }
+  // get available seat
+  const availableSeats = _.map(_.range(0, 5), (_, idx) => ({
+    disabled: idx & 1,
+    label: `${idx} 號`,
+  }))
+  // get available player list
+  const availablePlayers = _.map(
+    Players,
+    ({ status: { isAlive, election } }, idx) => ({
+      label: `${idx + 1} 號玩家`,
+      disabled: !isAlive,
+    }),
+  )
+
+  const _submitSeat = value => {
+    console.log(value)
+    setSeatDialogOpen(false)
+  }
+
+  const _submitVote = value => {
+    console.log(value)
+    setVoteDialogOpen(false)
+  }
+
   return (
     <Grid className={classes.container} container direction="row">
       <Grid item lg sm md />
       <Grid item lg={2} md={3} sm={12}>
-        <BoardInfo info={info} />
+        <BoardInfo gameID={gameID} info={info} />
         <div className={classes.spacer} />
         <PlayerList isGod={isGod} players={Players} />
       </Grid>
       <Grid item lg={4} md={6} sm={12}>
         <Grid container justify="center">
-          <GameFunctions isGod={isGod} />
+          <SelectDialog
+            title={"選擇號碼"}
+            availableOptions={availableSeats}
+            open={seatDialogOpen}
+            dismissDialog={() => setSeatDialogOpen(false)}
+            submit={value => _submitSeat(value)}
+          />
+          <SelectDialog
+            title={"選擇投票"}
+            availableOptions={availablePlayers}
+            open={voteDialogOpen}
+            dismissDialog={() => setVoteDialogOpen(false)}
+            submit={value => _submitVote(value)}
+          />
+          <GameFunctions isGod={isGod} playerFuncs={playerFuncs} />
         </Grid>
         <VoteProgress votes={Votes} isGod={isGod} />
       </Grid>
