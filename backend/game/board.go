@@ -2,16 +2,13 @@ package game
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
-	"path/filepath"
 )
 
 type BoardFileCharacter struct {
-	Name       string `json:"name"`
-	Team       int    `json:"team"`
-	NightOrder int    `json:"night_order"`
-	Hint       string `json:"hint"`
-	Count      int    `json:"count"`
+	Name  string `json:"name"`
+	Count int    `json:"count"`
 }
 
 type BoardFile struct {
@@ -21,15 +18,15 @@ type BoardFile struct {
 }
 
 type Board struct {
-	Name       string
-	Characters []*Character
-	HasSheriff bool
+	Name       string       `json:"name"`
+	Characters []*Character `json:"characters"`
+	HasSheriff bool         `json:"has_sheriff"`
 }
 
 func NewBoard(boardname string) (*Board, error) {
 	board := new(Board)
 	board.Name = boardname
-	filebytes, err := ioutil.ReadFile(filepath.Join("./board", boardname))
+	filebytes, err := ioutil.ReadFile(fmt.Sprintf("./data/boards/%s.json", boardname))
 	if err != nil {
 		return nil, err
 	}
@@ -40,12 +37,11 @@ func NewBoard(boardname string) (*Board, error) {
 
 	for _, character := range boardfile.Characters {
 		for i := 0; i < character.Count; i++ {
-			board.Characters = append(board.Characters, &Character{
-				Name:       character.Name,
-				Team:       character.Team,
-				NightOrder: character.NightOrder,
-				Hint:       character.Hint,
-			})
+			char, err := NewCharacter(character.Name)
+			if err != nil {
+				return nil, err
+			}
+			board.Characters = append(board.Characters, char)
 		}
 	}
 

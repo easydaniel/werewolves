@@ -1,0 +1,33 @@
+{
+  "has_sheriff": true,
+  "characters": [
+    {
+      "name": "狼王",
+      "count": 1
+    },
+    {
+      "name": "狼人",
+      "count": 3
+    },
+    {
+      "name": "預言家",
+      "count": 1
+    },
+    {
+      "name": "女巫",
+      "count": 1
+    },
+    {
+      "name": "獵人",
+      "count": 1
+    },
+    {
+      "name": "守衛",
+      "count": 1
+    },
+    {
+      "name": "平民",
+      "count": 4
+    }
+  ]
+}

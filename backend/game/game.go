@@ -5,6 +5,7 @@ type Game struct {
 	Board  *Board
 	Day    int
 	Player []*Player
+	Host   *Player
 }
 
 func NewGame(boardname string) (*Game, error) {

@@ -26,6 +26,7 @@ func NewWebSocket() *WebSocket {
 	w.player = make(map[string]*game.Player)
 	w.action = make(map[string]WSFunction)
 	w.action["ping"] = Ping
+
 	return w
 }
 
