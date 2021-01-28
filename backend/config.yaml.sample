@@ -1,2 +1,6 @@
 server:
   port: 8081
+
+  cors:
+    hosts:
+      - http://192.168.137.102:3000

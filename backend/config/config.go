@@ -7,12 +7,17 @@ import (
 )
 
 type Server struct {
-	Port int
+	Port int  `yaml:"port"`
+	CORS CORS `yaml:"cors"`
 }
 
 // Config .
 type Config struct {
-	Server Server
+	Server Server `yaml:"server"`
+}
+
+type CORS struct {
+	Hosts []string `yaml:"hosts"`
 }
 
 func NewConfig(path string) (*Config, error) {

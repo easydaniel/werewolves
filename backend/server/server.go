@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
@@ -36,7 +37,15 @@ func Run() {
 	db.AutoMigrate(models.User{})
 
 	// gin.SetMode(gin.ReleaseMode)
+
+	fmt.Println(cfg.Server.CORS.Hosts)
 	router := gin.Default()
+	config := cors.DefaultConfig()
+	config.AllowOrigins = cfg.Server.CORS.Hosts
+	config.AllowCredentials = true
+
+	router.Use(cors.New(config))
+
 	store := cookie.NewStore([]byte("secret"))
 	router.Use(sessions.Sessions("mysession", store))
 	router.Use(middlewares.Auth(db))
