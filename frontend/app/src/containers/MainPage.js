@@ -1,6 +1,7 @@
 // @format
 import React, { useState, useEffect } from "react"
 
+import * as Api from "../lib/APIUtils"
 import {
   MenuItem,
   FormControl,
@@ -68,10 +69,16 @@ const joinGame = gameID => {
   return Game
 }
 
-const MainPage = ({ boardList, setGame, setIsGod }) => {
+const MainPage = ({ _boardList, setGame, setIsGod }) => {
   const classes = useStyles()
+  const [boardList, setBoardList] = useState([])
   const [boardIndex, setBoardIndex] = useState()
   const [gameID, setGameID] = useState()
+
+  useEffect(async () => {
+    const list = await Api.getBoardList()
+    setBoardList(list)
+  }, [])
 
   return (
     <Grid
@@ -101,10 +108,10 @@ const MainPage = ({ boardList, setGame, setIsGod }) => {
             </TextField>
             <Button
               className={classes.button}
-              onClick={() => {
+              onClick={async () => {
                 setIsGod(true)
-                const game = createGame(boardIndex)
-                setGame(game)
+                const game = await Api.createGame(boardList[boardIndex])
+                // setGame(game)
               }}
               variant="outlined"
               color="primary"
