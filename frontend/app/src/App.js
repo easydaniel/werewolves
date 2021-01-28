@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react"
 
 import MainPage from "./containers/MainPage"
 import GamePage from "./containers/GamePage"
+import AuthPage from "./containers/AuthPage"
 
 // Sync with backend
 const Boards = ["預女獵白", "狼王守衛"]
@@ -26,7 +27,7 @@ const App = () => {
     setGame(null)
     setIsGod(false)
   }
-
+  return <AuthPage />
   return game === null ? (
     <MainPage boardList={boardList} setGame={setGame} setIsGod={setIsGod} />
   ) : (
