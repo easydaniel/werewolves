@@ -1,14 +1,15 @@
 // @format
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import * as Api from "../lib/APIUtils"
+import MessageContext from "../lib/message/context"
 
 import {
+  Button,
   FormControl,
   FormGroup,
-  Paper,
-  Button,
-  TextField,
   Grid,
+  Paper,
+  TextField,
 } from "@material-ui/core"
 
 import { makeStyles } from "@material-ui/core/styles"
@@ -44,6 +45,8 @@ const AuthPage = ({ setUser }) => {
   const classes = useStyles()
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
+
+  const { setMessage } = useContext(MessageContext)
 
   return (
     <Grid
@@ -84,8 +87,13 @@ const AuthPage = ({ setUser }) => {
             <Button
               className={classes.button}
               onClick={async () => {
-                const user = await Api.login(username, password)
-                console.log(user)
+                const [user, err] = await Api.login(username, password)
+                if (err) {
+                  setMessage({ value: err, severity: "error" })
+                } else {
+                  setUser(user)
+                  setMessage({ value: "Login success", severity: "success" })
+                }
               }}
               variant="outlined"
               color="primary"
@@ -95,19 +103,14 @@ const AuthPage = ({ setUser }) => {
             <Button
               className={classes.button}
               onClick={async () => {
-                await Api.logout()
-              }}
-              variant="outlined"
-              color="primary"
-            >
-              Logout
-            </Button>
-            <Button
-              className={classes.button}
-              onClick={async () => {
-                const resp = await Api.registerUser(username, password)
-
-                console.log(resp)
+                const [_, err] = await Api.registerUser(username, password)
+                if (err) {
+                  setMessage({ value: err, severity: "error" })
+                } else {
+                  const [user, _] = await Api.login(username, password)
+                  setUser(user)
+                  setMessage({ value: "Login success", severity: "success" })
+                }
               }}
               variant="outlined"
               color="secondary"

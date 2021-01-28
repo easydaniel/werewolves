@@ -2,9 +2,19 @@
 
 import React, { useEffect, useState } from "react"
 
+import { Snackbar } from "@material-ui/core"
+
+import MuiAlert from "@material-ui/lab/Alert"
+
 import MainPage from "./containers/MainPage"
 import GamePage from "./containers/GamePage"
 import AuthPage from "./containers/AuthPage"
+
+import { MessageProvider } from "./lib/message/context"
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />
+}
 
 // Sync with backend
 const Boards = ["預女獵白", "狼王守衛"]
@@ -18,6 +28,9 @@ const App = () => {
   const [boardList, setBoardList] = useState([])
   const [game, setGame] = useState(null)
   const [isGod, setIsGod] = useState(false)
+  const [user, setUser] = useState(null)
+  const [message, setMessage] = useState({ value: null, severity: null })
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
     setBoardList(getBoards)
@@ -27,11 +40,32 @@ const App = () => {
     setGame(null)
     setIsGod(false)
   }
-  return <AuthPage />
-  return game === null ? (
-    <MainPage boardList={boardList} setGame={setGame} setIsGod={setIsGod} />
-  ) : (
-    <GamePage game={game} isGod={isGod} leaveGame={() => initialize()} />
+
+  return (
+    <MessageProvider
+      value={{
+        message,
+        setMessage: ({ value, severity }) => {
+          setMessage({ value, severity })
+          setOpen(true)
+        },
+      }}
+    >
+      {user === null ? (
+        <AuthPage setUser={setUser} />
+      ) : game === null ? (
+        <MainPage boardList={boardList} setGame={setGame} setIsGod={setIsGod} />
+      ) : (
+        <GamePage game={game} isGod={isGod} leaveGame={() => initialize()} />
+      )}
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert severity={message.severity}>{message.value}</Alert>
+      </Snackbar>
+    </MessageProvider>
   )
 }
 

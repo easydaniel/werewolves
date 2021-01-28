@@ -1,28 +1,38 @@
-const HOSTNAME = "http://192.168.137.102:8081"
+const HOSTNAME = "http://192.168.102.108:8081"
 
-export const registerUser = async (username, password) => {
-  const resp = await fetch(`${HOSTNAME}/users/register`, {
-    credentials: 'include',
+export const registerUser = async (username, password) =>
+  await fetch(`${HOSTNAME}/users/register`, {
+    credentials: "include",
     mode: "cors",
     method: "POST",
     body: JSON.stringify({ name: username, password }),
-  })
-  return resp
-}
+  }).then(async resp => {
+    if (resp.ok) {
+      return [{ username }, null]
+    }
+    const { error } = await resp.json()
 
-export const login = async (username, password) => {
-  const resp = await fetch(`${HOSTNAME}/users/login`, {
-    credentials: 'include',
+    return [null, error]
+  })
+
+export const login = async (username, password) =>
+  await fetch(`${HOSTNAME}/users/login`, {
+    credentials: "include",
     mode: "cors",
     method: "POST",
     body: JSON.stringify({ name: username, password }),
+  }).then(async resp => {
+    if (resp.ok) {
+      return [{ username }, null]
+    }
+    const { error } = await resp.json()
+
+    return [null, error]
   })
-  return true // return ?user
-}
 
 export const logout = async () => {
   await fetch(`${HOSTNAME}/users/logout`, {
-    credentials: 'include',
+    credentials: "include",
     mode: "cors",
     method: "POST",
   })
