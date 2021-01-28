@@ -83,11 +83,24 @@ const AuthPage = ({ setUser }) => {
           <FormGroup className={classes.rowContainer} row>
             <Button
               className={classes.button}
-              onClick={() => {}}
+              onClick={async () => {
+                const user = await Api.login(username, password)
+                console.log(user)
+              }}
               variant="outlined"
               color="primary"
             >
               Login
+            </Button>
+            <Button
+              className={classes.button}
+              onClick={async () => {
+                await Api.logout()
+              }}
+              variant="outlined"
+              color="primary"
+            >
+              Logout
             </Button>
             <Button
               className={classes.button}
