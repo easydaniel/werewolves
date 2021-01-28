@@ -1,7 +1,10 @@
 package controllers
 
 import (
+	"io/ioutil"
 	"net/http"
+	"path/filepath"
+	"strings"
 
 	"github.com/easydaniel/werewolves/backend/game"
 	"github.com/easydaniel/werewolves/backend/middlewares"
@@ -19,6 +22,26 @@ func NewGameController(db *gorm.DB) *GameController {
 	ctrl.db = db
 	ctrl.games = make(map[string]*game.Game)
 	return ctrl
+}
+
+func (ctrl *GameController) GetBoardType(c *gin.Context) {
+
+	files, err := ioutil.ReadDir("./data/boards")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "Read Files Error",
+		})
+		return
+	}
+
+	result := []string{}
+
+	for _, f := range files {
+		basename := f.Name()
+		result = append(result, strings.TrimSuffix(basename, filepath.Ext(basename)))
+	}
+
+	c.JSON(http.StatusOK, result)
 }
 
 func (ctrl *GameController) Status(c *gin.Context) {

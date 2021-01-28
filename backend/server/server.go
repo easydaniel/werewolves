@@ -56,6 +56,7 @@ func Run() {
 	GameController := controllers.NewGameController(db)
 	UserController := controllers.NewUserController(db)
 
+	router.GET("/boardtype/", GameController.GetBoardType)
 	router.POST("/games/", GameController.Create)
 	router.GET("/games/:gameID", GameController.Status)
 	router.POST("/games/:gameID", GameController.JoinRoom)
