@@ -77,7 +77,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const GamePage = ({ game, isGod }) => {
+const GamePage = ({ game, isGod, leaveGame }) => {
   const classes = useStyles()
   const {
     gameID,
@@ -92,6 +92,10 @@ const GamePage = ({ game, isGod }) => {
     getCharacter: () => {
       console.log("getcharacter")
     },
+    leaveGame,
+  }
+  const godFuncs = {
+    leaveGame,
   }
   // get available seat
   const availableSeats = _.map(_.range(0, 5), (_, idx) => ({
@@ -141,7 +145,11 @@ const GamePage = ({ game, isGod }) => {
             dismissDialog={() => setVoteDialogOpen(false)}
             submit={value => _submitVote(value)}
           />
-          <GameFunctions isGod={isGod} playerFuncs={playerFuncs} />
+          <GameFunctions
+            isGod={isGod}
+            playerFuncs={playerFuncs}
+            godFuncs={godFuncs}
+          />
         </Grid>
         <VoteProgress votes={Votes} isGod={isGod} />
       </Grid>

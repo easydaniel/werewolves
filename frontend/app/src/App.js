@@ -9,7 +9,7 @@ import GamePage from "./containers/GamePage"
 const Boards = ["預女獵白", "狼王守衛"]
 
 const getBoards = () => {
-  // Fetch boards here
+  // Fetch boards here. can use API
   return Boards
 }
 
@@ -22,10 +22,15 @@ const App = () => {
     setBoardList(getBoards)
   })
 
+  const initialize = () => {
+    setGame(null)
+    setIsGod(false)
+  }
+
   return game === null ? (
     <MainPage boardList={boardList} setGame={setGame} setIsGod={setIsGod} />
   ) : (
-    <GamePage game={game} isGod={isGod} />
+    <GamePage game={game} isGod={isGod} leaveGame={() => initialize()} />
   )
 }
 
