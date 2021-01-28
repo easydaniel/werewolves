@@ -72,7 +72,7 @@ const joinGame = gameID => {
 const MainPage = ({ _boardList, setGame, setIsGod }) => {
   const classes = useStyles()
   const [boardList, setBoardList] = useState([])
-  const [boardIndex, setBoardIndex] = useState()
+  const [boardIndex, setBoardIndex] = useState(null)
   const [gameID, setGameID] = useState()
 
   useEffect(async () => {
@@ -113,6 +113,7 @@ const MainPage = ({ _boardList, setGame, setIsGod }) => {
                 const game = await Api.createGame(boardList[boardIndex])
                 // setGame(game)
               }}
+              disabled={boardIndex === null}
               variant="outlined"
               color="primary"
             >
