@@ -1,5 +1,6 @@
 package game
 
 type Member struct {
-	Name string `json:"name"`
+	Username    string `json:"username"`
+	DisplayName string `json:"display_name"`
 }

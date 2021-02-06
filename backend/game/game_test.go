@@ -24,18 +24,18 @@ func TestNewGame(t *testing.T) {
 			args: args{
 				boardname: "狼王守衛",
 				host: &Member{
-					Name: "test_member",
+					Username: "test_member",
 				},
 			},
 			want: &Game{
 				Day: 0,
 				Member: map[string]*Member{
 					"test_member": {
-						Name: "test_member",
+						Username: "test_member",
 					},
 				},
 				Host: &Member{
-					Name: "test_member",
+					Username: "test_member",
 				},
 				Player: []*Player{nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil},
 				End:    false,
@@ -72,15 +72,15 @@ func TestGame_JoinRoom(t *testing.T) {
 			name: "Test Normal",
 			args: args{
 				member: &Member{
-					Name: "user",
+					Username: "user",
 				},
 			},
 			expectMember: map[string]*Member{
 				"admin": {
-					Name: "admin",
+					Username: "admin",
 				},
 				"user": {
-					Name: "user",
+					Username: "user",
 				},
 			},
 		},
@@ -88,12 +88,12 @@ func TestGame_JoinRoom(t *testing.T) {
 			name: "Test Exist",
 			args: args{
 				member: &Member{
-					Name: "admin",
+					Username: "admin",
 				},
 			},
 			expectMember: map[string]*Member{
 				"admin": {
-					Name: "admin",
+					Username: "admin",
 				},
 			},
 			wantErr: fmt.Errorf("Player Already In Room"),
@@ -102,7 +102,7 @@ func TestGame_JoinRoom(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			game, err := NewGame("狼王守衛", &Member{
-				Name: "admin",
+				Username: "admin",
 			})
 			assert.Nil(t, err)
 			err = game.JoinRoom(tt.args.member)
@@ -128,12 +128,12 @@ func TestGame_ExitRoom(t *testing.T) {
 			name: "Test Normal",
 			args: args{
 				member: &Member{
-					Name: "user",
+					Username: "user",
 				},
 			},
 			expectMember: map[string]*Member{
 				"admin": {
-					Name: "admin",
+					Username: "admin",
 				},
 			},
 		},
@@ -141,12 +141,12 @@ func TestGame_ExitRoom(t *testing.T) {
 			name: "Test Normal With Seat",
 			args: args{
 				member: &Member{
-					Name: "user",
+					Username: "user",
 				},
 			},
 			expectMember: map[string]*Member{
 				"admin": {
-					Name: "admin",
+					Username: "admin",
 				},
 			},
 			originPlayer: []*Player{{
@@ -158,15 +158,15 @@ func TestGame_ExitRoom(t *testing.T) {
 			name: "Test Not Exist",
 			args: args{
 				member: &Member{
-					Name: "non-user",
+					Username: "non-user",
 				},
 			},
 			expectMember: map[string]*Member{
 				"admin": {
-					Name: "admin",
+					Username: "admin",
 				},
 				"user": {
-					Name: "user",
+					Username: "user",
 				},
 			},
 			wantErr: fmt.Errorf("Player Not In Room"),
@@ -175,15 +175,15 @@ func TestGame_ExitRoom(t *testing.T) {
 			name: "Test Host Exit",
 			args: args{
 				member: &Member{
-					Name: "admin",
+					Username: "admin",
 				},
 			},
 			expectMember: map[string]*Member{
 				"admin": {
-					Name: "admin",
+					Username: "admin",
 				},
 				"user": {
-					Name: "user",
+					Username: "user",
 				},
 			},
 			wantErr: fmt.Errorf("Host Cannot Exit Room"),
@@ -192,11 +192,11 @@ func TestGame_ExitRoom(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			game, err := NewGame("狼王守衛", &Member{
-				Name: "admin",
+				Username: "admin",
 			})
 			assert.Nil(t, err)
 			err = game.JoinRoom(&Member{
-				Name: "user",
+				Username: "user",
 			})
 			assert.Nil(t, err)
 			if tt.originPlayer != nil {
@@ -227,22 +227,22 @@ func TestGame_ChangeHost(t *testing.T) {
 			name: "Test Normal",
 			args: args{
 				member: &Member{
-					Name: "user",
+					Username: "user",
 				},
 			},
 			expectHost: &Member{
-				Name: "user",
+				Username: "user",
 			},
 		},
 		{
 			name: "Test Not Exist",
 			args: args{
 				member: &Member{
-					Name: "non-user",
+					Username: "non-user",
 				},
 			},
 			expectHost: &Member{
-				Name: "admin",
+				Username: "admin",
 			},
 			wantErr: fmt.Errorf("Player Not In Room"),
 		},
@@ -250,11 +250,11 @@ func TestGame_ChangeHost(t *testing.T) {
 			name: "Test Change Host With Player",
 			args: args{
 				member: &Member{
-					Name: "player",
+					Username: "player",
 				},
 			},
 			expectHost: &Member{
-				Name: "admin",
+				Username: "admin",
 			},
 			wantErr: fmt.Errorf("Cannot Set Player As Host"),
 		},
@@ -262,19 +262,19 @@ func TestGame_ChangeHost(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			game, err := NewGame("狼王守衛", &Member{
-				Name: "admin",
+				Username: "admin",
 			})
 			assert.Nil(t, err)
 			err = game.JoinRoom(&Member{
-				Name: "user",
+				Username: "user",
 			})
 			assert.Nil(t, err)
 			err = game.JoinRoom(&Member{
-				Name: "player",
+				Username: "player",
 			})
 			assert.Nil(t, err)
 			err = game.SetSeat(&Member{
-				Name: "player",
+				Username: "player",
 			}, 0)
 			assert.Nil(t, err)
 			err = game.ChangeHost(tt.args.member)
@@ -300,7 +300,7 @@ func TestGame_SetSeat(t *testing.T) {
 			name: "Test Normal",
 			args: args{
 				member: &Member{
-					Name: "user",
+					Username: "user",
 				},
 				id: 0,
 			},
@@ -312,7 +312,7 @@ func TestGame_SetSeat(t *testing.T) {
 			name: "Test Error id Negative",
 			args: args{
 				member: &Member{
-					Name: "user",
+					Username: "user",
 				},
 				id: -1,
 			},
@@ -323,7 +323,7 @@ func TestGame_SetSeat(t *testing.T) {
 			name: "Test Error id Greater / Equal Than",
 			args: args{
 				member: &Member{
-					Name: "user",
+					Username: "user",
 				},
 				id: 12,
 			},
@@ -334,7 +334,7 @@ func TestGame_SetSeat(t *testing.T) {
 			name: "Test Not In Room",
 			args: args{
 				member: &Member{
-					Name: "non-user",
+					Username: "non-user",
 				},
 				id: 0,
 			},
@@ -345,7 +345,7 @@ func TestGame_SetSeat(t *testing.T) {
 			name: "Test Host",
 			args: args{
 				member: &Member{
-					Name: "admin",
+					Username: "admin",
 				},
 				id: 0,
 			},
@@ -356,7 +356,7 @@ func TestGame_SetSeat(t *testing.T) {
 			name: "Test Already Have Player",
 			args: args{
 				member: &Member{
-					Name: "user",
+					Username: "user",
 				},
 				id: 0,
 			},
@@ -372,7 +372,7 @@ func TestGame_SetSeat(t *testing.T) {
 			name: "Test Change Seat",
 			args: args{
 				member: &Member{
-					Name: "user",
+					Username: "user",
 				},
 				id: 1,
 			},
@@ -387,14 +387,14 @@ func TestGame_SetSeat(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			game, err := NewGame("狼王守衛", &Member{
-				Name: "admin",
+				Username: "admin",
 			})
 			assert.Nil(t, err)
 			if tt.originPlayer != nil {
 				game.Player = tt.originPlayer
 			}
 			err = game.JoinRoom(&Member{
-				Name: "user",
+				Username: "user",
 			})
 			assert.Nil(t, err)
 			err = game.SetSeat(tt.args.member, tt.args.id)
@@ -452,7 +452,7 @@ func TestGame_ExitSeat(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			game, err := NewGame("狼王守衛", &Member{
-				Name: "admin",
+				Username: "admin",
 			})
 			assert.Nil(t, err)
 			if tt.originPlayer != nil {
@@ -478,7 +478,7 @@ func TestGame_IsHost(t *testing.T) {
 			name: "Test Normal",
 			args: args{
 				member: &Member{
-					Name: "admin",
+					Username: "admin",
 				},
 			},
 			expectRes: true,
@@ -487,7 +487,7 @@ func TestGame_IsHost(t *testing.T) {
 			name: "Test Not Host",
 			args: args{
 				member: &Member{
-					Name: "player",
+					Username: "player",
 				},
 			},
 			expectRes: false,
@@ -496,7 +496,7 @@ func TestGame_IsHost(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			game, err := NewGame("狼王守衛", &Member{
-				Name: "admin",
+				Username: "admin",
 			})
 			assert.Nil(t, err)
 
@@ -521,7 +521,7 @@ func TestGame_GetSeat(t *testing.T) {
 			name: "Test Normal 1",
 			args: args{
 				member: &Member{
-					Name: "admin",
+					Username: "admin",
 				},
 			},
 			originPlayer: []*Player{{
@@ -533,7 +533,7 @@ func TestGame_GetSeat(t *testing.T) {
 			name: "Test Normal 2",
 			args: args{
 				member: &Member{
-					Name: "admin",
+					Username: "admin",
 				},
 			},
 			originPlayer: []*Player{nil, nil, nil, nil, nil, {
@@ -545,7 +545,7 @@ func TestGame_GetSeat(t *testing.T) {
 			name: "Test Not InSeat",
 			args: args{
 				member: &Member{
-					Name: "admin",
+					Username: "admin",
 				},
 			},
 			expectRes: -1,
@@ -555,7 +555,7 @@ func TestGame_GetSeat(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			game, err := NewGame("狼王守衛", &Member{
-				Name: "admin",
+				Username: "admin",
 			})
 			assert.Nil(t, err)
 			if tt.originPlayer != nil {
@@ -571,15 +571,15 @@ func TestGame_GetSeat(t *testing.T) {
 
 func TestGame_FillTestUser(t *testing.T) {
 	game, err := NewGame("狼王守衛", &Member{
-		Name: "admin",
+		Username: "admin",
 	})
 	assert.Nil(t, err)
 	err = game.JoinRoom(&Member{
-		Name: "user",
+		Username: "user",
 	})
 	assert.Nil(t, err)
 	err = game.SetSeat(&Member{
-		Name: "user",
+		Username: "user",
 	}, 0)
 	assert.Nil(t, err)
 	game.FillTestUser()
@@ -592,7 +592,7 @@ func TestGame_FillTestUser(t *testing.T) {
 
 func TestGame_Kill(t *testing.T) {
 	game, err := NewGame("狼王守衛", &Member{
-		Name: "admin",
+		Username: "admin",
 	})
 	assert.Nil(t, err)
 	game.FillTestUser()

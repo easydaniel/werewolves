@@ -42,7 +42,7 @@ func NewGame(boardname string, host *Member) (*Game, error) {
 	game.Day = 0
 	game.Player = make([]*Player, len(game.Board.Characters))
 	game.Member = make(map[string]*Member)
-	game.Member[host.Name] = host
+	game.Member[host.Username] = host
 	game.Host = host
 	game.lock = new(sync.Mutex)
 	game.End = false
@@ -81,23 +81,23 @@ func (g *Game) SetSeat(member *Member, id int) error {
 	if id >= len(g.Player) || id < 0 {
 		return fmt.Errorf("Seat ID Should Between 0 and %v", len(g.Player)-1)
 	}
-	if _, ok := g.Member[member.Name]; !ok {
+	if _, ok := g.Member[member.Username]; !ok {
 		return fmt.Errorf("Player Not In Room")
 	}
 	// Host Cannot set seat
-	if member.Name == g.Host.Name {
+	if member.Username == g.Host.Username {
 		return fmt.Errorf("Host Cannot Enter Seat")
 	}
 	if g.Player[id] != nil {
 		return fmt.Errorf("Seat Already Have Player")
 	}
 	for i, player := range g.Player {
-		if player != nil && player.Name == member.Name {
+		if player != nil && player.Name == member.Username {
 			g.Player[i] = nil
 		}
 	}
 	g.Player[id] = &Player{
-		Name: member.Name,
+		Name: member.Username,
 	}
 	return nil
 }
@@ -121,39 +121,39 @@ func (g *Game) ExitSeat(id int) error {
 func (g *Game) JoinRoom(member *Member) error {
 	g.lock.Lock()
 	defer g.lock.Unlock()
-	if _, ok := g.Member[member.Name]; ok {
+	if _, ok := g.Member[member.Username]; ok {
 		return fmt.Errorf("Player Already In Room")
 	}
-	g.Member[member.Name] = member
+	g.Member[member.Username] = member
 	return nil
 }
 
 func (g *Game) ExitRoom(member *Member) error {
 	g.lock.Lock()
 	defer g.lock.Unlock()
-	if _, ok := g.Member[member.Name]; !ok {
+	if _, ok := g.Member[member.Username]; !ok {
 		return fmt.Errorf("Player Not In Room")
 	}
-	if member.Name == g.Host.Name {
+	if member.Username == g.Host.Username {
 		return fmt.Errorf("Host Cannot Exit Room")
 	}
 	for i, player := range g.Player {
-		if player != nil && player.Name == member.Name {
+		if player != nil && player.Name == member.Username {
 			g.Player[i] = nil
 		}
 	}
-	delete(g.Member, member.Name)
+	delete(g.Member, member.Username)
 	return nil
 }
 
 func (g *Game) ChangeHost(member *Member) error {
 	g.lock.Lock()
 	defer g.lock.Unlock()
-	if _, ok := g.Member[member.Name]; !ok {
+	if _, ok := g.Member[member.Username]; !ok {
 		return fmt.Errorf("Player Not In Room")
 	}
 	for _, player := range g.Player {
-		if player != nil && player.Name == member.Name {
+		if player != nil && player.Name == member.Username {
 			return fmt.Errorf("Cannot Set Player As Host")
 		}
 	}
@@ -162,7 +162,7 @@ func (g *Game) ChangeHost(member *Member) error {
 }
 
 func (g *Game) IsHost(member *Member) bool {
-	if g.Host.Name == member.Name {
+	if g.Host.Username == member.Username {
 		return true
 	}
 	return false
@@ -170,7 +170,7 @@ func (g *Game) IsHost(member *Member) bool {
 
 func (g *Game) GetSeat(member *Member) (int, error) {
 	for i, player := range g.Player {
-		if player != nil && player.Name == member.Name {
+		if player != nil && player.Name == member.Username {
 			return i, nil
 		}
 	}
@@ -189,7 +189,7 @@ func (g *Game) Status(member *Member) *Game {
 		if player == nil {
 			continue
 		}
-		if player.Name == member.Name {
+		if player.Name == member.Username {
 			continue
 		}
 		player.Character = nil
@@ -210,7 +210,8 @@ func (g *Game) FillTestUser() {
 				Name: id,
 			}
 			g.Member[id] = &Member{
-				Name: id,
+				Username:    id,
+				DisplayName: id,
 			}
 		}
 	}

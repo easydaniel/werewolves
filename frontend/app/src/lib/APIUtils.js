@@ -42,7 +42,7 @@ export const logout = async () => {
 
 // Game
 export const getBoardList = async () =>
-  await fetch(`${HOSTNAME}/boardtype/`, {
+  await fetch(`${HOSTNAME}/boardtype`, {
     credentials: "include",
     mode: "cors",
     method: "GET",
@@ -54,7 +54,7 @@ export const getBoardList = async () =>
   })
 
 export const createGame = async board =>
-  await fetch(`${HOSTNAME}/games/`, {
+  await fetch(`${HOSTNAME}/games`, {
     credentials: "include",
     mode: "cors",
     method: "POST",

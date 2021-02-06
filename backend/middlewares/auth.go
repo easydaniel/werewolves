@@ -13,7 +13,7 @@ func Auth(db *gorm.DB) gin.HandlerFunc {
 		username, ok := session.Get("user").(string)
 		if ok {
 			var user models.User
-			user.Name = username
+			user.Username = username
 			db.Find(&user)
 			c.Set("user", &user)
 		}

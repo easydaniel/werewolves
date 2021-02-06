@@ -23,8 +23,9 @@ func NewUserController(db *gorm.DB) *UserController {
 }
 
 type UserRegisterBody struct {
-	Name     string
-	Password string
+	Username    string `json:"username"`
+	DisplayName string `json:"display_name"`
+	Password    string `json:"password"`
 }
 
 func (ctrl *UserController) Register(c *gin.Context) {
@@ -42,7 +43,7 @@ func (ctrl *UserController) Register(c *gin.Context) {
 
 	// find user
 	ctrl.db.Where(models.User{
-		Name: body.Name,
+		Username: body.Username,
 	}).Find(&user)
 
 	if user.ID != 0 {
@@ -58,8 +59,9 @@ func (ctrl *UserController) Register(c *gin.Context) {
 	}
 
 	ctrl.db.Create(&models.User{
-		Name:     body.Name,
-		Password: string(hashedPassword),
+		Username:    body.Username,
+		DisplayName: body.DisplayName,
+		Password:    string(hashedPassword),
 	})
 
 	c.JSON(http.StatusOK, map[string]interface{}{
@@ -68,12 +70,12 @@ func (ctrl *UserController) Register(c *gin.Context) {
 }
 
 type UserLoginBody struct {
-	Name     string
+	Username string
 	Password string
 }
 
 func (ctrl *UserController) Login(c *gin.Context) {
-	var body UserRegisterBody
+	var body UserLoginBody
 	err := c.BindJSON(&body)
 
 	if err != nil {
@@ -87,7 +89,7 @@ func (ctrl *UserController) Login(c *gin.Context) {
 
 	// find user
 	ctrl.db.Where(models.User{
-		Name: body.Name,
+		Username: body.Username,
 	}).Find(&user)
 
 	if user.ID == 0 {
@@ -106,7 +108,7 @@ func (ctrl *UserController) Login(c *gin.Context) {
 	}
 
 	session := sessions.Default(c)
-	session.Set("user", body.Name)
+	session.Set("user", body.Username)
 	session.Save()
 
 	c.JSON(http.StatusOK, map[string]interface{}{

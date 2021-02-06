@@ -52,7 +52,7 @@ func (ctrl *GameController) Status(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusOK, ctrl.games[gameID].Status(&game.Member{Name: user.Name}))
+	c.JSON(http.StatusOK, ctrl.games[gameID].Status(&game.Member{Username: user.Username}))
 }
 
 type GameCreateBody struct {
@@ -68,7 +68,7 @@ func (ctrl *GameController) Create(c *gin.Context) {
 		})
 	}
 	user, _ := middlewares.GetUser(c)
-	newGame, _ := game.NewGame(body.Board, &game.Member{Name: user.Name})
+	newGame, _ := game.NewGame(body.Board, &game.Member{Username: user.Username, DisplayName: user.DisplayName})
 	ctrl.games[newGame.ID] = newGame
 
 	if err != nil {
@@ -92,7 +92,7 @@ func (ctrl *GameController) JoinRoom(c *gin.Context) {
 
 	g := ctrl.games[gameID]
 	user, _ := middlewares.GetUser(c)
-	err := g.JoinRoom(&game.Member{Name: user.Name})
+	err := g.JoinRoom(&game.Member{Username: user.Username, DisplayName: user.DisplayName})
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -118,7 +118,7 @@ func (ctrl *GameController) ExitRoom(c *gin.Context) {
 
 	g := ctrl.games[gameID]
 	user, _ := middlewares.GetUser(c)
-	err := g.ExitRoom(&game.Member{Name: user.Name})
+	err := g.ExitRoom(&game.Member{Username: user.Username})
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -157,7 +157,7 @@ func (ctrl *GameController) SetSeat(c *gin.Context) {
 
 	g := ctrl.games[gameID]
 	user, _ := middlewares.GetUser(c)
-	err = g.SetSeat(&game.Member{Name: user.Name}, body.Seat)
+	err = g.SetSeat(&game.Member{Username: user.Username}, body.Seat)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -197,8 +197,8 @@ func (ctrl *GameController) ExitSeat(c *gin.Context) {
 	g := ctrl.games[gameID]
 	user, _ := middlewares.GetUser(c)
 	seat := -1
-	if !g.IsHost(&game.Member{Name: user.Name}) {
-		seat, err = g.GetSeat(&game.Member{Name: user.Name})
+	if !g.IsHost(&game.Member{Username: user.Username}) {
+		seat, err = g.GetSeat(&game.Member{Username: user.Username})
 		if err != nil {
 			c.JSON(http.StatusBadRequest, map[string]interface{}{
 				"error": err.Error(),
@@ -267,7 +267,7 @@ func (ctrl *GameController) Kill(c *gin.Context) {
 
 	g := ctrl.games[gameID]
 	user, _ := middlewares.GetUser(c)
-	if !g.IsHost(&game.Member{Name: user.Name}) {
+	if !g.IsHost(&game.Member{Username: user.Username}) {
 		c.JSON(http.StatusForbidden, map[string]interface{}{
 			"error": "Permission denied",
 		})
