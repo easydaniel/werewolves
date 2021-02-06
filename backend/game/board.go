@@ -6,6 +6,11 @@ import (
 	"io/ioutil"
 )
 
+type BoardCharacter struct {
+	Name string `json:"name"`
+	Team int    `json:"team"`
+}
+
 type BoardFileCharacter struct {
 	Name  string `json:"name"`
 	Count int    `json:"count"`
@@ -18,9 +23,10 @@ type BoardFile struct {
 }
 
 type Board struct {
-	Name       string       `json:"name"`
-	Characters []*Character `json:"characters"`
-	HasSheriff bool         `json:"has_sheriff"`
+	Name       string            `json:"name"`
+	Characters []*BoardCharacter `json:"characters"`
+	HasSheriff bool              `json:"has_sheriff"`
+	NightFlow  []string          `json:"night_flow"`
 }
 
 func NewBoard(boardname string) (*Board, error) {
@@ -33,15 +39,21 @@ func NewBoard(boardname string) (*Board, error) {
 	var boardfile BoardFile
 	json.Unmarshal(filebytes, &boardfile)
 	board.HasSheriff = boardfile.HasSheriff
-	board.Characters = make([]*Character, 0)
+	board.Characters = make([]*BoardCharacter, 0)
 
 	for _, character := range boardfile.Characters {
+		char, err := NewCharacter(character.Name)
+		if err != nil {
+			return nil, err
+		}
 		for i := 0; i < character.Count; i++ {
-			char, err := NewCharacter(character.Name)
-			if err != nil {
-				return nil, err
-			}
-			board.Characters = append(board.Characters, char)
+			board.Characters = append(board.Characters, &BoardCharacter{
+				Name: char.Name,
+				Team: char.Team,
+			})
+		}
+		if len(char.Hint) > 0 {
+			board.NightFlow = append(board.NightFlow, char.Hint)
 		}
 	}
 

@@ -38,7 +38,6 @@ func Run() {
 
 	// gin.SetMode(gin.ReleaseMode)
 
-	fmt.Println(cfg.Server.CORS.Hosts)
 	router := gin.Default()
 	config := cors.DefaultConfig()
 	config.AllowOrigins = cfg.Server.CORS.Hosts
@@ -58,7 +57,7 @@ func Run() {
 
 	router.GET("/boardtype/", GameController.GetBoardType)
 	router.POST("/games/", GameController.Create)
-	router.GET("/games/:gameID", GameController.Status)
+	// router.GET("/games/:gameID", GameController.Status)
 	router.POST("/games/:gameID", GameController.JoinRoom)
 	router.DELETE("/games/:gameID", GameController.ExitRoom)
 	router.POST("/games/:gameID/seat/:setID", GameController.SetSeat)

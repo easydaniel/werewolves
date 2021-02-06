@@ -62,6 +62,9 @@ func (ctrl *UserController) Register(c *gin.Context) {
 		Password: string(hashedPassword),
 	})
 
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success",
+	})
 }
 
 type UserLoginBody struct {
@@ -105,11 +108,20 @@ func (ctrl *UserController) Login(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Set("user", body.Name)
 	session.Save()
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success",
+	})
 }
+
 func (ctrl *UserController) Logout(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Clear()
 	session.Save()
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success",
+	})
 }
 
 func (ctrl *UserController) Profile(c *gin.Context) {
