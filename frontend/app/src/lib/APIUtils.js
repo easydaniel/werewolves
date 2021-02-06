@@ -59,7 +59,4 @@ export const createGame = async board =>
     mode: "cors",
     method: "POST",
     body: JSON.stringify({ board }),
-  }).then(async resp => {
-    const json = await resp.json()
-    console.log(json)
-  })
+  }).then(async resp => resp.json())

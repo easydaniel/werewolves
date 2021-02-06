@@ -79,13 +79,9 @@ const useStyles = makeStyles(theme => ({
 
 const GamePage = ({ game, isGod, leaveGame }) => {
   const classes = useStyles()
-  const {
-    gameID,
-    board: { flow, ...info },
-  } = game
+  const { ID, Board, Player } = game
   const [voteDialogOpen, setVoteDialogOpen] = useState(false)
   const [seatDialogOpen, setSeatDialogOpen] = useState(false)
-
   const playerFuncs = {
     openVoteDialog: () => setVoteDialogOpen(true),
     openSeatDialog: () => setSeatDialogOpen(true),
@@ -103,13 +99,13 @@ const GamePage = ({ game, isGod, leaveGame }) => {
     label: `${idx} 號`,
   }))
   // get available player list
-  const availablePlayers = _.map(
-    Players,
-    ({ status: { isAlive, election } }, idx) => ({
-      label: `${idx + 1} 號玩家`,
-      disabled: !isAlive,
-    }),
-  )
+  // const availablePlayers = _.map(
+  //   Player,
+  //   ({ status: { isAlive, election } }, idx) => ({
+  //     label: `${idx + 1} 號玩家`,
+  //     disabled: !isAlive,
+  //   }),
+  // )
 
   const _submitSeat = value => {
     console.log(value)
@@ -125,9 +121,9 @@ const GamePage = ({ game, isGod, leaveGame }) => {
     <Grid className={classes.container} container direction="row">
       <Grid item lg sm md />
       <Grid item lg={2} md={3} sm={12}>
-        <BoardInfo gameID={gameID} info={info} />
+        <BoardInfo ID={ID} board={Board} />
         <div className={classes.spacer} />
-        <PlayerList isGod={isGod} players={Players} />
+        <PlayerList isGod={isGod} players={Player} />
       </Grid>
       <Grid item lg={4} md={6} sm={12}>
         <Grid container justify="center">
@@ -138,13 +134,13 @@ const GamePage = ({ game, isGod, leaveGame }) => {
             dismissDialog={() => setSeatDialogOpen(false)}
             submit={value => _submitSeat(value)}
           />
-          <SelectDialog
+          {/* <SelectDialog
             title={"選擇投票"}
             availableOptions={availablePlayers}
             open={voteDialogOpen}
             dismissDialog={() => setVoteDialogOpen(false)}
             submit={value => _submitVote(value)}
-          />
+          /> */}
           <GameFunctions
             isGod={isGod}
             playerFuncs={playerFuncs}
@@ -154,11 +150,7 @@ const GamePage = ({ game, isGod, leaveGame }) => {
         <VoteProgress votes={Votes} isGod={isGod} />
       </Grid>
       <Grid item lg={2} md={3} sm={12}>
-        {isGod ? (
-          <NightFlow flow={flow} />
-        ) : (
-          <CharacterCard character={Character} />
-        )}
+        {isGod ? "<NightFlow />" : <CharacterCard character={Character} />}
       </Grid>
       <Grid item lg sm md />
     </Grid>

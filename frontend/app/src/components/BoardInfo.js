@@ -2,6 +2,8 @@ import React from "react"
 import _ from "lodash"
 
 import { makeStyles } from "@material-ui/core/styles"
+import { red } from "@material-ui/core/colors"
+import cx from "classnames"
 import {
   Card,
   CardContent,
@@ -14,16 +16,26 @@ const useStyles = makeStyles({
   root: {
     width: 275,
   },
+  teamWolf: {
+    color: red[800],
+  },
 })
 
-const BoardInfo = ({ info, gameID }) => {
-  const { name, characters, hasSheriff } = info
-  const numPlayers = _.reduce(characters, (result, val) => result + val, 0)
+const BoardInfo = ({ board, ID }) => {
+  const { name, characters, has_sheriff: hasSheriff } = board
+  const numPlayers = characters.length
+  const characterMap = {}
+  _.each(characters, ({ name, team }) => {
+    if (!_.has(characterMap, name)) {
+      characterMap[name] = { team, count: 0 }
+    }
+    characterMap[name]["count"] += 1
+  })
   const classes = useStyles()
   return (
     <Card elevation={3} className={classes.root}>
       <CardContent>
-        <Typography color="textSecondary">{gameID}</Typography>
+        <Typography color="textSecondary">{ID}</Typography>
         <Typography variant="h5" component="h2">
           {`${name} (${numPlayers} 人)`}
         </Typography>
@@ -33,11 +45,12 @@ const BoardInfo = ({ info, gameID }) => {
           </Typography>
         )}
         <List dense>
-          {_.map(characters, (count, character) => (
+          {_.map(characterMap, ({ team, count }, name) => (
             <ListItem
+              className={cx({ [classes.teamWolf]: team === 1 })}
               disableGutters
-              key={character}
-            >{`${character}: ${count}`}</ListItem>
+              key={name}
+            >{`${name}: ${count}`}</ListItem>
           ))}
         </List>
       </CardContent>

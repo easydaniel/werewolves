@@ -71,53 +71,52 @@ const PlayerList = ({ players, isGod }) => {
   return (
     players && (
       <List dense subheader={<ListSubheader>玩家列表</ListSubheader>}>
-        {players.map(
-          (
-            {
-              name,
-              character,
-              status: { isVacant, isConnected, isAlive, election },
-            },
-            idx,
-          ) => (
-            <ListItem key={idx}>
-              <ListItemAvatar>
-                <StyledBadge
-                  overlap="circle"
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "right",
-                  }}
-                  invisible={!isConnected}
-                  variant={"dot"}
+        {players.map((player, idx) => {
+          if (player === null) {
+            return <ListItem key={idx}>空位 {`(${idx + 1} 號)`}</ListItem>
+          }
+          const playerAvatar = (
+            <ListItemAvatar>
+              <StyledBadge
+                overlap="circle"
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                invisible={!player.isConnected}
+                variant={"dot"}
+              >
+                <Avatar
+                  className={cx({
+                    [classes.avatar]: true,
+                    [classes.livePlayerAvatar]:
+                      !player.isVacant && player.isAlive,
+                    [classes.deadPlayerAvatar]:
+                      !player.isVacant && !player.isAlive,
+                  })}
                 >
-                  <Avatar
-                    className={cx({
-                      [classes.avatar]: true,
-                      [classes.livePlayerAvatar]: !isVacant && isAlive,
-                      [classes.deadPlayerAvatar]: !isVacant && !isAlive,
-                    })}
-                  >
-                    {idx + 1}
-                  </Avatar>
-                </StyledBadge>
-              </ListItemAvatar>
-              {isGod && (
-                <Chip
-                  className={classes.characterChip}
-                  variant="outlined"
-                  size="small"
-                  color="primary"
-                  label={character}
-                />
-              )}
-              {name || `${idx + 1} 號玩家`}
-              <ListItemIcon className={classes.electionStatus}>
-                <ElectionStatusIcon election={election} />
-              </ListItemIcon>
+                  {idx + 1}
+                </Avatar>
+              </StyledBadge>
+            </ListItemAvatar>
+          )
+          const characterChip = isGod && (
+            <Chip
+              className={classes.characterChip}
+              variant="outlined"
+              size="small"
+              color="primary"
+              label={player.character}
+            />
+          )
+          return (
+            <ListItem idx={idx}>
+              {playerAvatar}
+              {characterChip}
+              {player.name || `${idx + 1} 號玩家`}
             </ListItem>
-          ),
-        )}
+          )
+        })}
       </List>
     )
   )

@@ -111,7 +111,7 @@ const MainPage = ({ _boardList, setGame, setIsGod }) => {
               onClick={async () => {
                 setIsGod(true)
                 const game = await Api.createGame(boardList[boardIndex])
-                // setGame(game)
+                setGame(game)
               }}
               disabled={boardIndex === null}
               variant="outlined"
