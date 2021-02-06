@@ -62,7 +62,7 @@ func Run() {
 	router.DELETE("/games/:gameID", GameController.ExitRoom)
 	router.POST("/games/:gameID/seat", GameController.SetSeat)
 	router.DELETE("/games/:gameID/seat", GameController.ExitSeat)
-	// router.POST("/games/:gameID/kill", GameController.Elect)
+	router.POST("/games/:gameID/kill", GameController.Kill)
 	// router.POST("/games/:gameID/start", GameController.Start)
 	// router.POST("/games/:gameID/elect", GameController.CreateElect)
 	// router.POST("/games/:gameID/elect/:electID", GameController.Elect)
