@@ -38,6 +38,7 @@ func TestNewGame(t *testing.T) {
 					Name: "test_member",
 				},
 				Player: []*Player{nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil},
+				End:    false,
 			},
 		},
 	}
@@ -52,6 +53,7 @@ func TestNewGame(t *testing.T) {
 			assert.Equal(t, tt.want.Member, got.Member)
 			assert.Equal(t, tt.want.Host, got.Host)
 			assert.Equal(t, tt.want.Player, got.Player)
+			assert.Equal(t, tt.want.End, got.End)
 		})
 	}
 }
@@ -168,6 +170,23 @@ func TestGame_ExitRoom(t *testing.T) {
 				},
 			},
 			wantErr: fmt.Errorf("Player Not In Room"),
+		},
+		{
+			name: "Test Host Exit",
+			args: args{
+				member: &Member{
+					Name: "admin",
+				},
+			},
+			expectMember: map[string]*Member{
+				"admin": {
+					Name: "admin",
+				},
+				"user": {
+					Name: "user",
+				},
+			},
+			wantErr: fmt.Errorf("Host Cannot Exit Room"),
 		},
 	}
 	for _, tt := range tests {
@@ -444,4 +463,143 @@ func TestGame_ExitSeat(t *testing.T) {
 			assert.Equal(t, tt.wantErr, err)
 		})
 	}
+}
+
+func TestGame_IsHost(t *testing.T) {
+	type args struct {
+		member *Member
+	}
+	tests := []struct {
+		name      string
+		args      args
+		expectRes bool
+	}{
+		{
+			name: "Test Normal",
+			args: args{
+				member: &Member{
+					Name: "admin",
+				},
+			},
+			expectRes: true,
+		},
+		{
+			name: "Test Not Host",
+			args: args{
+				member: &Member{
+					Name: "player",
+				},
+			},
+			expectRes: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			game, err := NewGame("狼王守衛", &Member{
+				Name: "admin",
+			})
+			assert.Nil(t, err)
+
+			res := game.IsHost(tt.args.member)
+			assert.Equal(t, tt.expectRes, res)
+		})
+	}
+}
+
+func TestGame_GetSeat(t *testing.T) {
+	type args struct {
+		member *Member
+	}
+	tests := []struct {
+		name         string
+		args         args
+		originPlayer []*Player
+		expectRes    int
+		wantErr      error
+	}{
+		{
+			name: "Test Normal 1",
+			args: args{
+				member: &Member{
+					Name: "admin",
+				},
+			},
+			originPlayer: []*Player{{
+				Name: "admin",
+			}, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil},
+			expectRes: 0,
+		},
+		{
+			name: "Test Normal 2",
+			args: args{
+				member: &Member{
+					Name: "admin",
+				},
+			},
+			originPlayer: []*Player{nil, nil, nil, nil, nil, {
+				Name: "admin",
+			}, nil, nil, nil, nil, nil, nil},
+			expectRes: 5,
+		},
+		{
+			name: "Test Not InSeat",
+			args: args{
+				member: &Member{
+					Name: "admin",
+				},
+			},
+			expectRes: -1,
+			wantErr:   fmt.Errorf("Not In Seat"),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			game, err := NewGame("狼王守衛", &Member{
+				Name: "admin",
+			})
+			assert.Nil(t, err)
+			if tt.originPlayer != nil {
+				game.Player = tt.originPlayer
+			}
+
+			res, err := game.GetSeat(tt.args.member)
+			assert.Equal(t, tt.wantErr, err)
+			assert.Equal(t, tt.expectRes, res)
+		})
+	}
+}
+
+func TestGame_FillTestUser(t *testing.T) {
+	game, err := NewGame("狼王守衛", &Member{
+		Name: "admin",
+	})
+	assert.Nil(t, err)
+	err = game.JoinRoom(&Member{
+		Name: "user",
+	})
+	assert.Nil(t, err)
+	err = game.SetSeat(&Member{
+		Name: "user",
+	}, 0)
+	assert.Nil(t, err)
+	game.FillTestUser()
+	assert.Equal(t, &Player{Name: "user"}, game.Player[0])
+	for _, player := range game.Player {
+		assert.NotNil(t, player)
+	}
+
+}
+
+func TestGame_Kill(t *testing.T) {
+	game, err := NewGame("狼王守衛", &Member{
+		Name: "admin",
+	})
+	assert.Nil(t, err)
+	game.FillTestUser()
+	err = game.Start()
+	assert.Nil(t, err)
+
+	assert.True(t, game.Player[0].Alive)
+	game.Kill(0)
+	assert.False(t, game.Player[0].Alive)
 }

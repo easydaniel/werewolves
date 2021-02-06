@@ -43,10 +43,17 @@ func (ctrl *GameController) GetBoardType(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
-// func (ctrl *GameController) Status(c *gin.Context) {
-// 	id := c.Param("gameID")
-// 	c.JSON(http.StatusOK, ctrl.games[id])
-// }
+func (ctrl *GameController) Status(c *gin.Context) {
+	gameID := c.Param("gameID")
+	user, _ := middlewares.GetUser(c)
+	if _, ok := ctrl.games[gameID]; !ok {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"error": "No Game",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, ctrl.games[gameID].Status(&game.Member{Name: user.Name}))
+}
 
 type GameCreateBody struct {
 	Board string `json:"board"`
@@ -73,30 +80,19 @@ func (ctrl *GameController) Create(c *gin.Context) {
 	c.JSON(http.StatusOK, newGame)
 }
 
-type GameJoinBody struct {
-	GameID string `json:"game_id"`
-}
-
 func (ctrl *GameController) JoinRoom(c *gin.Context) {
-	var body GameJoinBody
-	err := c.BindJSON(&body)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"error": "Bad Body",
-		})
-		return
-	}
+	gameID := c.Param("gameID")
 
-	if _, ok := ctrl.games[body.GameID]; !ok {
+	if _, ok := ctrl.games[gameID]; !ok {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"error": "No Game",
 		})
 		return
 	}
 
-	g := ctrl.games[body.GameID]
+	g := ctrl.games[gameID]
 	user, _ := middlewares.GetUser(c)
-	err = g.JoinRoom(&game.Member{Name: user.Name})
+	err := g.JoinRoom(&game.Member{Name: user.Name})
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -110,30 +106,19 @@ func (ctrl *GameController) JoinRoom(c *gin.Context) {
 	})
 }
 
-type GameExitRoomBody struct {
-	GameID string `json:"game_id"`
-}
-
 func (ctrl *GameController) ExitRoom(c *gin.Context) {
-	var body GameExitRoomBody
-	err := c.BindJSON(&body)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"error": "Bad Body",
-		})
-		return
-	}
+	gameID := c.Param("gameID")
 
-	if _, ok := ctrl.games[body.GameID]; !ok {
+	if _, ok := ctrl.games[gameID]; !ok {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"error": "No Game",
 		})
 		return
 	}
 
-	g := ctrl.games[body.GameID]
+	g := ctrl.games[gameID]
 	user, _ := middlewares.GetUser(c)
-	err = g.ExitRoom(&game.Member{Name: user.Name})
+	err := g.ExitRoom(&game.Member{Name: user.Name})
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -148,11 +133,12 @@ func (ctrl *GameController) ExitRoom(c *gin.Context) {
 }
 
 type GameSetSeatBody struct {
-	GameID string `json:"game_id"`
-	Seat   int    `json:"seat"`
+	Seat int `json:"seat"`
 }
 
 func (ctrl *GameController) SetSeat(c *gin.Context) {
+	gameID := c.Param("gameID")
+
 	var body GameSetSeatBody
 	err := c.BindJSON(&body)
 	if err != nil {
@@ -162,14 +148,14 @@ func (ctrl *GameController) SetSeat(c *gin.Context) {
 		return
 	}
 
-	if _, ok := ctrl.games[body.GameID]; !ok {
+	if _, ok := ctrl.games[gameID]; !ok {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"error": "No Game",
 		})
 		return
 	}
 
-	g := ctrl.games[body.GameID]
+	g := ctrl.games[gameID]
 	user, _ := middlewares.GetUser(c)
 	err = g.SetSeat(&game.Member{Name: user.Name}, body.Seat)
 
@@ -186,11 +172,12 @@ func (ctrl *GameController) SetSeat(c *gin.Context) {
 }
 
 type GameExitSeatBody struct {
-	GameID string `json:"game_id"`
-	Seat   int    `json:"seat"`
+	Seat int `json:"seat"`
 }
 
 func (ctrl *GameController) ExitSeat(c *gin.Context) {
+	gameID := c.Param("gameID")
+
 	var body GameExitSeatBody
 	err := c.BindJSON(&body)
 	if err != nil {
@@ -200,16 +187,32 @@ func (ctrl *GameController) ExitSeat(c *gin.Context) {
 		return
 	}
 
-	if _, ok := ctrl.games[body.GameID]; !ok {
+	if _, ok := ctrl.games[gameID]; !ok {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"error": "No Game",
 		})
 		return
 	}
 
-	g := ctrl.games[body.GameID]
-	// user, _ := middlewares.GetUser(c)
-	err = g.ExitSeat(body.Seat)
+	g := ctrl.games[gameID]
+	user, _ := middlewares.GetUser(c)
+	seat := -1
+	if !g.IsHost(&game.Member{Name: user.Name}) {
+		seat, err = g.GetSeat(&game.Member{Name: user.Name})
+		if err != nil {
+			c.JSON(http.StatusBadRequest, map[string]interface{}{
+				"error": err.Error(),
+			})
+			return
+		}
+	}
+	err = g.ExitSeat(seat)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"error": err.Error(),
+		})
+		return
+	}
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -217,6 +220,61 @@ func (ctrl *GameController) ExitSeat(c *gin.Context) {
 		})
 		return
 	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success",
+	})
+}
+
+func (ctrl *GameController) TestStart(c *gin.Context) {
+	gameID := c.Param("gameID")
+
+	if _, ok := ctrl.games[gameID]; !ok {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"error": "No Game",
+		})
+		return
+	}
+
+	ctrl.games[gameID].FillTestUser()
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success",
+	})
+}
+
+type GameKillBody struct {
+	Seat int `json:"seat"`
+}
+
+func (ctrl *GameController) Kill(c *gin.Context) {
+	gameID := c.Param("gameID")
+	var body GameKillBody
+	err := c.BindJSON(&body)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"error": "Bad Body",
+		})
+		return
+	}
+
+	if _, ok := ctrl.games[gameID]; !ok {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"error": "No Game",
+		})
+		return
+	}
+
+	g := ctrl.games[gameID]
+	user, _ := middlewares.GetUser(c)
+	if !g.IsHost(&game.Member{Name: user.Name}) {
+		c.JSON(http.StatusForbidden, map[string]interface{}{
+			"error": "Permission denied",
+		})
+		return
+	}
+
+	g.Kill(body.Seat)
 
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "success",
