@@ -1,11 +1,20 @@
 import React from "react"
 
+import * as Api from "../lib/APIUtils"
 import { ButtonGroup, Button } from "@material-ui/core"
 
 const GodFunctions = ({ leaveGame }) => {
   return (
     <ButtonGroup>
-      <Button>發身份</Button>
+      <Button
+        onClick={async () => {
+          // const resp = await Api.testGameStart("MQGCLM")
+          // const resp = await Api.getGameStatus("MQGCLM")
+          // console.log(resp)
+        }}
+      >
+        發身份
+      </Button>
       <Button>玩家自爆</Button>
       <Button>開啟投票</Button>
       <Button>統計票型</Button>

@@ -5,7 +5,6 @@ import {
   List,
   ListItem,
   ListItemAvatar,
-  ListItemIcon,
   ListSubheader,
   Chip,
   Avatar,

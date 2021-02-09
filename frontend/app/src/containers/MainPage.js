@@ -133,8 +133,8 @@ const MainPage = ({ _boardList, setGame, setIsGod }) => {
             />
             <Button
               className={classes.button}
-              onClick={() => {
-                const game = joinGame(gameID)
+              onClick={async () => {
+                const game = await Api.getGameStatus(gameID)
                 setGame(game)
               }}
               variant="outlined"

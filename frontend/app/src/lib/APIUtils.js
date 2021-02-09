@@ -1,4 +1,4 @@
-const HOSTNAME = "http://192.168.102.108:8081"
+const HOSTNAME = "http://10.0.0.20:8081"
 
 // User
 export const registerUser = async (username, password) =>
@@ -59,4 +59,18 @@ export const createGame = async board =>
     mode: "cors",
     method: "POST",
     body: JSON.stringify({ board }),
+  }).then(async resp => resp.json())
+
+export const getGameStatus = async gameID =>
+  await fetch(`${HOSTNAME}/games/${gameID}`, {
+    credentials: "include",
+    mode: "cors",
+    method: "GET",
+  }).then(async resp => resp.json())
+
+export const testGameStart = async gameID =>
+  await fetch(`${HOSTNAME}/games/${gameID}/test/start`, {
+    credentials: "include",
+    mode: "cors",
+    method: "GET",
   }).then(async resp => resp.json())

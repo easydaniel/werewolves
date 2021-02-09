@@ -1,6 +1,6 @@
 // @format
 import React, { useState } from "react"
-import _, { set } from "lodash"
+import _ from "lodash"
 import { Grid } from "@material-ui/core"
 
 import VoteProgress from "../components/VoteProgress"
@@ -79,7 +79,8 @@ const useStyles = makeStyles(theme => ({
 
 const GamePage = ({ game, isGod, leaveGame }) => {
   const classes = useStyles()
-  const { ID, Board, Player } = game
+  const { id, board, player } = game
+  const { night_flow } = board
   const [voteDialogOpen, setVoteDialogOpen] = useState(false)
   const [seatDialogOpen, setSeatDialogOpen] = useState(false)
   const playerFuncs = {
@@ -121,9 +122,9 @@ const GamePage = ({ game, isGod, leaveGame }) => {
     <Grid className={classes.container} container direction="row">
       <Grid item lg sm md />
       <Grid item lg={2} md={3} sm={12}>
-        <BoardInfo ID={ID} board={Board} />
+        <BoardInfo id={id} board={board} />
         <div className={classes.spacer} />
-        <PlayerList isGod={isGod} players={Player} />
+        <PlayerList isGod={isGod} players={player} />
       </Grid>
       <Grid item lg={4} md={6} sm={12}>
         <Grid container justify="center">
@@ -150,7 +151,11 @@ const GamePage = ({ game, isGod, leaveGame }) => {
         <VoteProgress votes={Votes} isGod={isGod} />
       </Grid>
       <Grid item lg={2} md={3} sm={12}>
-        {isGod ? "<NightFlow />" : <CharacterCard character={Character} />}
+        {isGod ? (
+          <NightFlow flow={night_flow} />
+        ) : (
+          <CharacterCard character={Character} />
+        )}
       </Grid>
       <Grid item lg sm md />
     </Grid>

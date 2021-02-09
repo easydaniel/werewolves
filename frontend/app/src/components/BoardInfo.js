@@ -21,7 +21,7 @@ const useStyles = makeStyles({
   },
 })
 
-const BoardInfo = ({ board, ID }) => {
+const BoardInfo = ({ board, id }) => {
   const { name, characters, has_sheriff: hasSheriff } = board
   const numPlayers = characters.length
   const characterMap = {}
@@ -35,7 +35,7 @@ const BoardInfo = ({ board, ID }) => {
   return (
     <Card elevation={3} className={classes.root}>
       <CardContent>
-        <Typography color="textSecondary">{ID}</Typography>
+        <Typography color="textSecondary">{id}</Typography>
         <Typography variant="h5" component="h2">
           {`${name} (${numPlayers} 人)`}
         </Typography>
