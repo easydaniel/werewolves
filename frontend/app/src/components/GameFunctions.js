@@ -8,7 +8,7 @@ const GodFunctions = ({ leaveGame }) => {
     <ButtonGroup>
       <Button
         onClick={async () => {
-          // const resp = await Api.testGameStart("MQGCLM")
+          const resp = await Api.testGameStart("UNFHLT")
           // const resp = await Api.getGameStatus("MQGCLM")
           // console.log(resp)
         }}

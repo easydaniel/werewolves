@@ -43,7 +43,12 @@ const App = () => {
       ) : game === null ? (
         <MainPage setGame={setGame} setIsGod={setIsGod} />
       ) : (
-        <GamePage game={game} isGod={isGod} leaveGame={() => initialize()} />
+        <GamePage
+          game={game}
+          setGame={setGame}
+          isGod={isGod}
+          leaveGame={() => initialize()}
+        />
       )}
       <Snackbar
         open={open}

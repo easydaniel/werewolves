@@ -1,8 +1,9 @@
 // @format
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import _ from "lodash"
 import { Grid } from "@material-ui/core"
 
+import * as Api from "../lib/APIUtils"
 import VoteProgress from "../components/VoteProgress"
 import SelectDialog from "../components/SelectDialog"
 import GameFunctions from "../components/GameFunctions"
@@ -13,6 +14,7 @@ import PlayerList from "../components/PlayerList"
 import { ElectionEnum } from "../components/PlayerList"
 
 import { makeStyles } from "@material-ui/core/styles"
+const POLL_FREQUENCY = 1000 // in ms
 
 const Votes = [
   {
@@ -44,10 +46,20 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const GamePage = ({ game, isGod, leaveGame }) => {
+const GamePage = ({ game, setGame, isGod, leaveGame }) => {
   const classes = useStyles()
   const { id, board, player } = game
   const { night_flow } = board
+
+  // Poll game status
+  useEffect(() => {
+    const gameStatusPoll = setInterval(async () => {
+      const gameStatus = await Api.getGameStatus(id)
+      setGame(gameStatus)
+    }, POLL_FREQUENCY)
+    return () => clearInterval(gameStatusPoll)
+  }, [game])
+
   const [voteDialogOpen, setVoteDialogOpen] = useState(false)
   const [seatDialogOpen, setSeatDialogOpen] = useState(false)
   const playerFuncs = {
