@@ -27,39 +27,6 @@ const Votes = [
   },
 ]
 
-const Players = [
-  {
-    name: "John",
-    character: "Wolf",
-    status: {
-      isVacant: false,
-      isConnected: true,
-      isAlive: true,
-      election: ElectionEnum.INVOLVED,
-    },
-  },
-  {
-    name: "Eason",
-    character: "Seer",
-    status: {
-      isVacant: false,
-      isConnected: true,
-      isAlive: false,
-      election: null,
-    },
-  },
-  {
-    name: "Daniel",
-    character: "Hunter",
-    status: {
-      isVacant: true,
-      isConnected: false,
-      isAlive: true,
-      election: ElectionEnum.CANCELED,
-    },
-  },
-]
-
 const Character = {
   name: "預言家",
   imgSrc:
