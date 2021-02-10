@@ -91,7 +91,7 @@ const AuthPage = ({ setUser }) => {
                 if (error) {
                   setMessage({ value: error, severity: "error" })
                 } else {
-                  // setUser(user)
+                  setUser(user)
                   setMessage({ value: "Login success", severity: "success" })
                 }
               }}
