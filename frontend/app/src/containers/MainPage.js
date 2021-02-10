@@ -85,7 +85,9 @@ const MainPage = ({ setGame, setIsGod }) => {
               className={classes.button}
               onClick={async () => {
                 setIsGod(true)
-                const game = await Api.createGame(boardList[boardIndex])
+                const [game, error] = await Api.createGame(
+                  boardList[boardIndex],
+                )
                 setGame(game)
               }}
               disabled={boardIndex === null}
