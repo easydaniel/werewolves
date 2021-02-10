@@ -1,8 +1,9 @@
 // @format
 
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 
-import { Snackbar } from "@material-ui/core"
+import * as Api from "./lib/APIUtils"
+import { Snackbar, Button } from "@material-ui/core"
 
 import MuiAlert from "@material-ui/lab/Alert"
 
@@ -38,6 +39,14 @@ const App = () => {
         },
       }}
     >
+      <Button
+        onClick={async () => {
+          const resp = await Api.getUser()
+          console.log(resp)
+        }}
+      >
+        BTN
+      </Button>
       {user === null ? (
         <AuthPage setUser={setUser} />
       ) : game === null ? (
@@ -47,7 +56,7 @@ const App = () => {
           game={game}
           setGame={setGame}
           isGod={isGod}
-          leaveGame={() => initialize()}
+          initialize={initialize}
         />
       )}
       <Snackbar

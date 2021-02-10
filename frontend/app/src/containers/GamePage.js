@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const GamePage = ({ game, setGame, isGod, leaveGame }) => {
+const GamePage = ({ game, setGame, isGod, initialize }) => {
   const classes = useStyles()
   const { id, board, player } = game
   const { night_flow } = board
@@ -60,6 +60,14 @@ const GamePage = ({ game, setGame, isGod, leaveGame }) => {
     return () => clearInterval(gameStatusPoll)
   }, [game])
 
+  const leaveRoom = async () => {
+    if (isGod) {
+    } else {
+      const [message, error] = await Api.exitRoom(id)
+    }
+    initialize()
+  }
+
   const [voteDialogOpen, setVoteDialogOpen] = useState(false)
   const [seatDialogOpen, setSeatDialogOpen] = useState(false)
   const playerFuncs = {
@@ -68,10 +76,10 @@ const GamePage = ({ game, setGame, isGod, leaveGame }) => {
     getCharacter: () => {
       console.log("getcharacter")
     },
-    leaveGame,
+    leaveRoom,
   }
   const godFuncs = {
-    leaveGame,
+    leaveRoom,
   }
   // get available seat
   const availableSeats = _.map(_.range(0, 5), (_, idx) => ({

@@ -3,7 +3,7 @@ import React from "react"
 import * as Api from "../lib/APIUtils"
 import { ButtonGroup, Button } from "@material-ui/core"
 
-const GodFunctions = ({ leaveGame }) => {
+const GodFunctions = ({ leaveRoom }) => {
   return (
     <ButtonGroup>
       <Button
@@ -18,7 +18,7 @@ const GodFunctions = ({ leaveGame }) => {
       <Button>玩家自爆</Button>
       <Button>開啟投票</Button>
       <Button>統計票型</Button>
-      <Button onClick={() => leaveGame()}>退出遊戲</Button>
+      <Button onClick={() => leaveRoom()}>退出遊戲</Button>
     </ButtonGroup>
   )
 }
@@ -27,7 +27,7 @@ const PlayerFunctions = ({
   openVoteDialog,
   openSeatDialog,
   getCharacter,
-  leaveGame,
+  leaveRoom,
 }) => {
   return (
     <ButtonGroup>
@@ -36,7 +36,7 @@ const PlayerFunctions = ({
       <Button onClick={() => openVoteDialog()}>投票</Button>
       <Button>上警</Button>
       <Button>退水</Button>
-      <Button onClick={() => leaveGame()}>退出遊戲</Button>
+      <Button onClick={() => leaveRoom()}>結束遊戲</Button>
     </ButtonGroup>
   )
 }

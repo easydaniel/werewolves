@@ -87,11 +87,11 @@ const AuthPage = ({ setUser }) => {
             <Button
               className={classes.button}
               onClick={async () => {
-                const [user, err] = await Api.login(username, password)
-                if (err) {
-                  setMessage({ value: err, severity: "error" })
+                const [user, error] = await Api.login(username, password)
+                if (error) {
+                  setMessage({ value: error, severity: "error" })
                 } else {
-                  setUser(user)
+                  // setUser(user)
                   setMessage({ value: "Login success", severity: "success" })
                 }
               }}
