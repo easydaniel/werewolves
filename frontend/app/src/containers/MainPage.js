@@ -1,7 +1,9 @@
 // @format
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 
 import * as Api from "../lib/APIUtils"
+import MessageContext from "../lib/message/context"
+
 import {
   MenuItem,
   FormControl,
@@ -47,6 +49,7 @@ const MainPage = ({ setGame, setIsGod }) => {
   const [boardIndex, setBoardIndex] = useState(null)
   const [gameID, setGameID] = useState()
 
+  const { setMessage } = useContext(MessageContext)
   useEffect(async () => {
     const list = await Api.getBoardList()
     setBoardList(list)
@@ -106,8 +109,14 @@ const MainPage = ({ setGame, setIsGod }) => {
             <Button
               className={classes.button}
               onClick={async () => {
-                const game = await Api.getGameStatus(gameID)
-                setGame(game)
+                const [message, err] = await Api.joinRoom(gameID)
+                if (err) {
+                  setMessage({ value: err, severity: "error" })
+                } else {
+                  setMessage({ value: "Join success", severity: "success" })
+                  const game = await Api.getGameStatus(gameID)
+                  setGame(game)
+                }
               }}
               variant="outlined"
               color="secondary"

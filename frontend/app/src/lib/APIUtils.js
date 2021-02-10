@@ -61,6 +61,34 @@ export const createGame = async board =>
     body: JSON.stringify({ board }),
   }).then(async resp => resp.json())
 
+export const joinRoom = async gameID =>
+  await fetch(`${HOSTNAME}/games/${gameID}`, {
+    credentials: "include",
+    mode: "cors",
+    method: "POST",
+  }).then(async resp => {
+    if (resp.ok) {
+      return ["Success", null]
+    }
+    const { error } = await resp.json()
+
+    return [null, error]
+  })
+
+export const exitRoom = async gameID =>
+  await fetch(`${HOSTNAME}/games/${gameID}`, {
+    credentials: "include",
+    mode: "cors",
+    method: "DELETE",
+  }).then(async resp => {
+    if (resp.ok) {
+      return ["Success", null]
+    }
+    const { error } = await resp.json()
+
+    return [null, error]
+  })
+
 export const getGameStatus = async gameID =>
   await fetch(`${HOSTNAME}/games/${gameID}`, {
     credentials: "include",
