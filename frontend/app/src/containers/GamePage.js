@@ -54,7 +54,7 @@ const GamePage = ({ game, setGame, isGod, leaveGame }) => {
   // Poll game status
   useEffect(() => {
     const gameStatusPoll = setInterval(async () => {
-      const gameStatus = await Api.getGameStatus(id)
+      const [gameStatus, error] = await Api.getGameStatus(id)
       setGame(gameStatus)
     }, POLL_FREQUENCY)
     return () => clearInterval(gameStatusPoll)

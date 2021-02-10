@@ -51,7 +51,7 @@ const MainPage = ({ setGame, setIsGod }) => {
 
   const { setMessage } = useContext(MessageContext)
   useEffect(async () => {
-    const list = await Api.getBoardList()
+    const [list, error] = await Api.getBoardList()
     setBoardList(list)
   }, [])
 
@@ -114,7 +114,7 @@ const MainPage = ({ setGame, setIsGod }) => {
                   setMessage({ value: err, severity: "error" })
                 } else {
                   setMessage({ value: "Join success", severity: "success" })
-                  const game = await Api.getGameStatus(gameID)
+                  const [game, error] = await Api.getGameStatus(gameID)
                   setGame(game)
                 }
               }}

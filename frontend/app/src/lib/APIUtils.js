@@ -1,5 +1,15 @@
 const HOSTNAME = "http://10.0.0.20:8081"
 
+const middlewares = {
+  errorHandler: async resp => {
+    if (resp.ok) {
+      return resp.json()
+    }
+    const { error } = await resp.json()
+    return [null, error]
+  },
+}
+
 // User
 export const registerUser = async (username, password) =>
   await fetch(`${HOSTNAME}/users/register`, {
@@ -7,14 +17,9 @@ export const registerUser = async (username, password) =>
     mode: "cors",
     method: "POST",
     body: JSON.stringify({ name: username, password }),
-  }).then(async resp => {
-    if (resp.ok) {
-      return [{ username }, null]
-    }
-    const { error } = await resp.json()
-
-    return [null, error]
   })
+    .then(middlewares.errorHandler)
+    .then(json => ["Success", null])
 
 export const login = async (username, password) =>
   await fetch(`${HOSTNAME}/users/login`, {
@@ -22,14 +27,9 @@ export const login = async (username, password) =>
     mode: "cors",
     method: "POST",
     body: JSON.stringify({ name: username, password }),
-  }).then(async resp => {
-    if (resp.ok) {
-      return [{ username }, null]
-    }
-    const { error } = await resp.json()
-
-    return [null, error]
   })
+    .then(middlewares.errorHandler)
+    .then(json => [{ username }, null])
 
 export const logout = async () => {
   await fetch(`${HOSTNAME}/users/logout`, {
@@ -46,12 +46,9 @@ export const getBoardList = async () =>
     credentials: "include",
     mode: "cors",
     method: "GET",
-  }).then(async resp => {
-    if (resp.ok) {
-      return await resp.json()
-    }
-    return null
   })
+    .then(middlewares.errorHandler)
+    .then(json => [json, null])
 
 export const createGame = async board =>
   await fetch(`${HOSTNAME}/games`, {
@@ -59,46 +56,61 @@ export const createGame = async board =>
     mode: "cors",
     method: "POST",
     body: JSON.stringify({ board }),
-  }).then(async resp => resp.json())
+  })
+    .then(middlewares.errorHandler)
+    .then(json => [json, null])
 
 export const joinRoom = async gameID =>
   await fetch(`${HOSTNAME}/games/${gameID}`, {
     credentials: "include",
     mode: "cors",
     method: "POST",
-  }).then(async resp => {
-    if (resp.ok) {
-      return ["Success", null]
-    }
-    const { error } = await resp.json()
-
-    return [null, error]
   })
+    .then(middlewares.errorHandler)
+    .then(json => ["Success", null])
 
 export const exitRoom = async gameID =>
   await fetch(`${HOSTNAME}/games/${gameID}`, {
     credentials: "include",
     mode: "cors",
     method: "DELETE",
-  }).then(async resp => {
-    if (resp.ok) {
-      return ["Success", null]
-    }
-    const { error } = await resp.json()
-
-    return [null, error]
   })
+    .then(middlewares.errorHandler)
+    .then(json => [json, null])
 
 export const getGameStatus = async gameID =>
   await fetch(`${HOSTNAME}/games/${gameID}`, {
     credentials: "include",
     mode: "cors",
     method: "GET",
-  }).then(async resp => resp.json())
+  })
+    .then(middlewares.errorHandler)
+    .then(json => [json, null])
+
+export const setSeat = async (gameID, seat) =>
+  await fetch(`${HOSTNAME}/games/${gameID}/seat`, {
+    credentials: "include",
+    mode: "cors",
+    method: "POST",
+    body: JSON.stringify({ seat }),
+  })
+    .then(middlewares.errorHandler)
+    .then(json => ["Success", null])
+
+export const exitSeat = async gameID =>
+  await fetch(`${HOSTNAME}/games/${gameID}/seat`, {
+    credentials: "include",
+    mode: "cors",
+    method: "DELETE",
+  })
+    .then(middlewares.errorHandler)
+    .then(json => ["Success", null])
 
 export const testGameStart = async gameID =>
   await fetch(`${HOSTNAME}/games/${gameID}/test/start`, {
     credentials: "include",
     mode: "cors",
     method: "GET",
-  }).then(async resp => resp.json())
+  })
+    .then(middlewares.errorHandler)
+    .then(json => [json, null])
