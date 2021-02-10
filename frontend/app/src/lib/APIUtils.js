@@ -16,7 +16,7 @@ export const registerUser = async (username, password) =>
     credentials: "include",
     mode: "cors",
     method: "POST",
-    body: JSON.stringify({ name: username, password }),
+    body: JSON.stringify({ username, password }),
   })
     .then(middlewares.errorHandler)
     .then(json => ["Success", null])
@@ -37,7 +37,7 @@ export const login = async (username, password) =>
     credentials: "include",
     mode: "cors",
     method: "POST",
-    body: JSON.stringify({ name: username, password }),
+    body: JSON.stringify({ username, password }),
   })
     .then(middlewares.errorHandler)
     .then(json => [{ username }, null])
