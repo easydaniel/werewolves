@@ -41,7 +41,7 @@ const App = () => {
     >
       <Button
         onClick={async () => {
-          const resp = await Api.getUser()
+          const [resp, error] = await Api.getUser()
           console.log(resp)
         }}
       >
