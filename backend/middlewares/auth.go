@@ -14,7 +14,7 @@ func Auth(db *gorm.DB) gin.HandlerFunc {
 		if ok {
 			var user models.User
 			user.Username = username
-			db.Find(&user)
+			db.Where(user).Find(&user)
 			c.Set("user", &user)
 		}
 		c.Next()
