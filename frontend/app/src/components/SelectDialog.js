@@ -16,6 +16,7 @@ import {
 const SelectDialog = ({
   open,
   availableOptions,
+  additionalActions,
   title,
   dismissDialog,
   submit,
@@ -44,6 +45,7 @@ const SelectDialog = ({
         <Button onClick={() => dismissDialog()} color="secondary">
           取消
         </Button>
+        {additionalActions}
         <Button
           onClick={() => {
             submit(value)

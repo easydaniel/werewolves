@@ -26,13 +26,13 @@ const GodFunctions = ({ leaveRoom }) => {
 const PlayerFunctions = ({
   openVoteDialog,
   openSeatDialog,
-  getCharacter,
+  exitSeat,
   leaveRoom,
 }) => {
   return (
     <ButtonGroup>
-      <Button onClick={() => openSeatDialog()}>選取號碼</Button>
-      <Button onClick={() => getCharacter()}>獲取身份</Button>
+      <Button onClick={() => openSeatDialog()}>選取座位</Button>
+      <Button onClick={() => exitSeat()}>離開座位</Button>
       <Button onClick={() => openVoteDialog()}>投票</Button>
       <Button>上警</Button>
       <Button>退水</Button>

@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 
 const GamePage = ({ game, setGame, isGod, initialize }) => {
   const classes = useStyles()
-  const { id, board, player } = game
+  const { id, board, player: players } = game
   const { night_flow } = board
 
   // Poll game status
@@ -73,8 +73,9 @@ const GamePage = ({ game, setGame, isGod, initialize }) => {
   const playerFuncs = {
     openVoteDialog: () => setVoteDialogOpen(true),
     openSeatDialog: () => setSeatDialogOpen(true),
-    getCharacter: () => {
-      console.log("getcharacter")
+    exitSeat: async () => {
+      const [message, error] = await Api.exitSeat(id)
+      console.log(error)
     },
     leaveRoom,
   }
@@ -82,9 +83,9 @@ const GamePage = ({ game, setGame, isGod, initialize }) => {
     leaveRoom,
   }
   // get available seat
-  const availableSeats = _.map(_.range(0, 5), (_, idx) => ({
-    disabled: idx & 1,
-    label: `${idx} 號`,
+  const availableSeats = _.map(players, (player, idx) => ({
+    disabled: player !== null,
+    label: player !== null ? player.name : `${idx + 1} 號`,
   }))
   // get available player list
   // const availablePlayers = _.map(
@@ -95,8 +96,8 @@ const GamePage = ({ game, setGame, isGod, initialize }) => {
   //   }),
   // )
 
-  const _submitSeat = value => {
-    console.log(value)
+  const _submitSeat = async seat => {
+    const [message, error] = await Api.setSeat(id, Number(seat))
     setSeatDialogOpen(false)
   }
 
@@ -111,7 +112,7 @@ const GamePage = ({ game, setGame, isGod, initialize }) => {
       <Grid item lg={2} md={3} sm={12}>
         <BoardInfo id={id} board={board} />
         <div className={classes.spacer} />
-        <PlayerList isGod={isGod} players={player} />
+        <PlayerList isGod={isGod} players={players} />
       </Grid>
       <Grid item lg={4} md={6} sm={12}>
         <Grid container justify="center">
