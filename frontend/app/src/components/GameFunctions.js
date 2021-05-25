@@ -17,7 +17,6 @@ const GodFunctions = ({ leaveRoom }) => {
       </Button>
       <Button>玩家自爆</Button>
       <Button>開啟投票</Button>
-      <Button>統計票型</Button>
       <Button onClick={() => leaveRoom()}>退出遊戲</Button>
     </ButtonGroup>
   )
